@@ -1,77 +1,142 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Irfaniya Madarsa - Donation & Kharcha</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Irfaniya Madarsa - Donations & Kharcha</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        /* Global Styles */
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
-            background-color: white; /* Removed grey background */
+            background: #f0f4f8;
+            color: #333;
         }
+
         header {
-            background-color: #0d6efd;
-            color: white;
-            padding: 15px;
+            background: linear-gradient(90deg, #0d6efd, #198754);
+            color: #fff;
             text-align: center;
+            padding: 30px 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            font-size: 1.1rem;
+        }
+
         .container {
-            padding: 15px;
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 15px;
         }
-        button {
+
+        /* Buttons */
+        .btn {
             width: 100%;
             padding: 12px;
-            margin: 8px 0;
-            border: none;
-            background-color: #198754;
-            color: white;
+            margin: 10px 0;
             font-size: 16px;
-            border-radius: 6px;
+            font-weight: 500;
+            border: none;
+            border-radius: 8px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            color: #fff;
         }
-        button:hover {
-            background-color: #146c43;
-        }
+
+        .btn-donation { background: #0d6efd; }
+        .btn-donation:hover { background: #0b5ed7; }
+
+        .btn-kharcha { background: #198754; }
+        .btn-kharcha:hover { background: #146c43; }
+
+        .btn-total { background: #ffc107; color: #333; }
+        .btn-total:hover { background: #e0a800; }
+
+        /* Sections */
         .section {
             display: none;
-            background: white; /* Keep sections white for readability */
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 6px;
+            background: #fff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
         }
+
+        .section h3 {
+            margin-top: 0;
+            color: #0d6efd;
+        }
+
+        /* Tables */
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 15px;
         }
+
         th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
+            padding: 12px;
             text-align: center;
         }
+
         th {
-            background-color: #0d6efd;
-            color: white;
+            background: #0d6efd;
+            color: #fff;
+            font-weight: 500;
         }
+
+        tr:nth-child(even) {
+            background: #f2f6fc;
+        }
+
+        tr:hover {
+            background: #e2ecff;
+        }
+
+        /* Total Box */
         .total-box {
             background: #ffc107;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 6px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 500;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Responsive */
+        @media(max-width: 600px){
+            header h1 { font-size: 1.5rem; }
+            .btn { font-size: 14px; }
+            th, td { padding: 8px; }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h2>Irfaniya Madarsa</h2>
+    <h1>Irfaniya Madarsa</h1>
     <p>Donation & Kharcha Details</p>
 </header>
 
 <div class="container">
 
-    <button onclick="showSection('donation')">Donation Given List</button>
-    <button onclick="showSection('kharcha')">Kharcha Details</button>
-    <button onclick="showSection('total')">Total & Balance</button>
+    <button class="btn btn-donation" onclick="showSection('donation')">Donation Given List</button>
+    <button class="btn btn-kharcha" onclick="showSection('kharcha')">Kharcha Details</button>
+    <button class="btn btn-total" onclick="showSection('total')">Total & Balance</button>
 
     <!-- Donation Section -->
     <div id="donation" class="section">
@@ -125,7 +190,7 @@
 
 <script>
     function showSection(id) {
-        var sections = document.querySelectorAll('.section');
+        const sections = document.querySelectorAll('.section');
         sections.forEach(section => section.style.display = "none");
         document.getElementById(id).style.display = "block";
     }
