@@ -7,104 +7,107 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Noto+Nastaliq+Urdu:wght@600&display=swap" rel="stylesheet">
 <style>
 /* Base Styles */
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
+* {margin:0;padding:0;box-sizing:border-box;}
+body {
   font-family:'Poppins',sans-serif;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  color:white;
-  overflow-x:hidden;
+  background: linear-gradient(135deg,#a8e6cf,#dcedc1);
   min-height:100vh;
+  color:#2c3e50;
+  overflow-x:hidden;
 }
-body::before{
-  content:"";
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:url("https://www.transparenttextures.com/patterns/arabesque.png");
-  opacity:0.05;
-  pointer-events:none;
-}
-
-/* Moon Animation */
-.moon{
-  position:absolute;
-  top:60px;
-  right:80px;
-  width:70px;
-  height:70px;
-  background:#fff;
-  border-radius:50%;
-  box-shadow:0 0 25px rgba(255,255,255,0.8);
-  animation:float 6s ease-in-out infinite;
-}
-.moon::after{
-  content:"";
-  position:absolute;
-  top:0; left:22px;
-  width:70px;height:70px;
-  background:#0f2027;
-  border-radius:50%;
-}
-@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-15px);}}
 
 /* Header */
-header{text-align:center;padding:80px 15px 40px;}
-header h1{font-size:36px;font-weight:700;letter-spacing:1px;}
-.urdu{font-family:'Noto Nastaliq Urdu',serif;font-size:28px;margin-top:8px;opacity:0.95;}
-.subtitle{margin-top:8px;font-weight:300;opacity:0.85;letter-spacing:0.5px;}
+header {
+  text-align:center;
+  padding:60px 15px 40px;
+}
+header h1 {
+  font-size:36px;
+  font-weight:700;
+  color:#006400;
+}
+.urdu {
+  font-family:'Noto Nastaliq Urdu',serif;
+  font-size:28px;
+  margin-top:8px;
+  color:#004d00;
+}
+.subtitle {
+  margin-top:6px;
+  font-weight:400;
+  color:#006400;
+}
 
 /* Container & Cards */
-.container{max-width:1000px;margin:auto;padding:15px;}
-.card{
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(18px);
+.container {max-width:1000px;margin:auto;padding:15px;}
+.card {
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(10px);
   padding:25px;
-  border-radius:25px;
-  box-shadow:0 15px 40px rgba(0,0,0,0.6);
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
   margin-bottom:25px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.card:hover{transform:translateY(-5px);box-shadow:0 25px 60px rgba(0,0,0,0.7);}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow:0 20px 40px rgba(0,0,0,0.2);
+}
 
-.counter{font-size:32px;font-weight:700;color:#00e676;margin-top:8px;}
-.button-group{display:flex;flex-direction:column;gap:14px;margin-top:20px;}
+.counter {
+  font-size:32px;
+  font-weight:700;
+  color:#006400;
+  margin-top:8px;
+}
+
+.button-group {
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  margin-top:20px;
+}
 
 /* Buttons */
-button{
+button {
   padding:14px;
   border:none;
   border-radius:30px;
   font-size:16px;
   font-weight:500;
-  background:linear-gradient(135deg,#00e676,#00bfa5);
+  background:linear-gradient(135deg,#00c853,#64dd17);
   color:#fff;
   cursor:pointer;
   transition:0.3s;
 }
-button:hover{
-  transform:translateY(-3px);
-  box-shadow:0 10px 25px rgba(0,0,0,0.5);
+button:hover {
+  transform: translateY(-3px);
+  box-shadow:0 8px 25px rgba(0,0,0,0.2);
 }
 
 /* Table Styles */
-.table-wrapper{overflow-x:auto;margin-top:15px;}
-table{
+.table-wrapper {
+  overflow-x:auto;
+  margin-top:15px;
+}
+table {
   width:100%;
   border-collapse:collapse;
   min-width:500px;
 }
-th,td{
+th, td {
   padding:12px;
   text-align:center;
-  border-bottom:1px solid rgba(255,255,255,0.3);
+  border-bottom:1px solid rgba(0,0,0,0.1);
   white-space:nowrap;
   transition: background 0.3s ease;
 }
-th{
-  background:rgba(0,0,0,0.5);
+th {
+  background: rgba(0,128,0,0.3);
   font-weight:600;
+  color:#004d00;
 }
-tr:hover td{background:rgba(255,255,255,0.1);}
+tr:hover td {background: rgba(0,128,0,0.1);}
 
 /* Responsive */
 @media(max-width:768px){
@@ -125,59 +128,60 @@ tr:hover td{background:rgba(255,255,255,0.1);}
 </style>
 </head>
 <body>
-<div class="moon"></div>
 
 <header>
-<h1>🕌 Irfaniya Masjid & Madarsa</h1>
-<div class="urdu">مدرسہ عرفانیہ مسجد</div>
-<div class="subtitle">Donation & Funds Management</div>
+  <h1>🕌 Irfaniya Masjid & Madarsa</h1>
+  <div class="urdu">مدرسہ عرفانیہ مسجد</div>
+  <div class="subtitle">Donation & Funds Management</div>
 </header>
 
 <div class="container">
 
 <div class="card">
-<h2>Total Donation & Balance</h2>
-<div class="counter" id="donationCounter">₹ 0</div>
-<div style="margin-top:10px;font-size:16px;">Balance: ₹ <span id="balance">0</span></div>
+  <h2>Total Donation & Balance</h2>
+  <div class="counter" id="donationCounter">₹ 0</div>
+  <div style="margin-top:10px;font-size:16px;">Balance: ₹ <span id="balance">0</span></div>
 </div>
 
 <div class="card">
-<h2>Manage Donations & Funds</h2>
-<div class="button-group">
-<button onclick="showSection('donation')">Donation List</button>
-<button onclick="showSection('kharcha')">Fund Used List</button>
-</div>
+  <h2>Manage Donations & Funds</h2>
+  <div class="button-group">
+    <button onclick="showSection('donation')">Donation List</button>
+    <button onclick="showSection('kharcha')">Fund Used List</button>
+  </div>
 
-<!-- Donation Section -->
-<div id="donation" style="display:none;" class="table-wrapper">
-<table id="donationTable">
-<tr>
-<th>Donation #</th>
-<th>Name</th>
-<th>Amount (₹)</th>
-<th>Date</th>
-<th>Payment Method</th>
-</tr>
-</table>
-</div>
+  <!-- Donation Section -->
+  <div id="donation" style="display:none;" class="table-wrapper">
+    <table id="donationTable">
+      <tr>
+        <th>Donation #</th>
+        <th>Name</th>
+        <th>Amount (₹)</th>
+        <th>Date</th>
+        <th>Payment Method</th>
+      </tr>
+    </table>
+  </div>
 
-<!-- Kharcha Section -->
-<div id="kharcha" style="display:none;" class="table-wrapper">
-<table id="kharchaTable">
-<tr>
-<th>Kharcha #</th>
-<th>Purpose</th>
-<th>Amount (₹)</th>
-<th>Date</th>
-<th>Paid From</th>
-</tr>
-</table>
+  <!-- Kharcha Section -->
+  <div id="kharcha" style="display:none;" class="table-wrapper">
+    <table id="kharchaTable">
+      <tr>
+        <th>Kharcha #</th>
+        <th>Purpose</th>
+        <th>Amount (₹)</th>
+        <th>Date</th>
+        <th>Paid From</th>
+      </tr>
+    </table>
+  </div>
+
 </div>
 
 </div>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbx4lP00Q3kbRpq3ajbBxPDpgSp7QHecEKcoPNtH4mhqalnsDbAQlGB2pLSKtXIOya1i/exec"; // Replace with your Apps Script Web App URL
+const API_URL = "https://script.google.com/macros/s/AKfycbx4lP00Q3kbRpq3ajbBxPDpgSp7QHecEKcoPNtH4mhqalnsDbAQlGB2pLSKtXIOya1i/exec"; 
 let donationList=[], kharchaList=[];
 
 function showSection(id){
@@ -187,7 +191,6 @@ function showSection(id){
   calculateTotals();
 }
 
-// Format ISO date to Indian format DD-MM-YYYY
 function formatIndianDate(isoDate){
   if(!isoDate) return "-";
   const d = new Date(isoDate);
@@ -209,7 +212,6 @@ async function fetchData(){
 }
 
 function renderTables(){
-  // Donation Table
   const dTable=document.getElementById('donationTable');
   dTable.innerHTML="<tr><th>Donation #</th><th>Name</th><th>Amount (₹)</th><th>Date</th><th>Payment Method</th></tr>";
   donationList.forEach((d,i)=>{
@@ -221,7 +223,6 @@ function renderTables(){
     row.insertCell(4).innerText=d.Method || "-";
   });
 
-  // Kharcha Table
   const kTable=document.getElementById('kharchaTable');
   kTable.innerHTML="<tr><th>Kharcha #</th><th>Purpose</th><th>Amount (₹)</th><th>Date</th><th>Paid From</th></tr>";
   kharchaList.forEach((k,i)=>{
@@ -252,7 +253,6 @@ function animateCounter(target){
   },15);
 }
 
-// Initialize
 fetchData();
 </script>
 </body>
