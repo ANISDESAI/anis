@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Irfaniya Madarsa - Donation & Kharcha</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: white; /* Removed grey background */
+        }
+        header {
+            background-color: #0d6efd;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        .container {
+            padding: 15px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: none;
+            background-color: #198754;
+            color: white;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #146c43;
+        }
+        .section {
+            display: none;
+            background: white; /* Keep sections white for readability */
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .total-box {
+            background: #ffc107;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h2>Irfaniya Madarsa</h2>
+    <p>Donation & Kharcha Details</p>
+</header>
+
+<div class="container">
+
+    <button onclick="showSection('donation')">Donation Given List</button>
+    <button onclick="showSection('kharcha')">Kharcha Details</button>
+    <button onclick="showSection('total')">Total & Balance</button>
+
+    <!-- Donation Section -->
+    <div id="donation" class="section">
+        <h3>Donation List</h3>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Amount</th>
+            </tr>
+            <tr>
+                <td>Ahmed</td>
+                <td>5000</td>
+            </tr>
+            <tr>
+                <td>Rahman</td>
+                <td>3000</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Kharcha Section -->
+    <div id="kharcha" class="section">
+        <h3>Kharcha Details</h3>
+        <table>
+            <tr>
+                <th>Purpose</th>
+                <th>Amount</th>
+            </tr>
+            <tr>
+                <td>Electric Bill</td>
+                <td>2000</td>
+            </tr>
+            <tr>
+                <td>Food</td>
+                <td>1500</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Total Section -->
+    <div id="total" class="section">
+        <h3>Total & Balance</h3>
+        <div class="total-box">
+            <p><strong>Total Donation:</strong> 8000</p>
+            <p><strong>Total Kharcha:</strong> 3500</p>
+            <p><strong>Balance:</strong> 4500</p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function showSection(id) {
+        var sections = document.querySelectorAll('.section');
+        sections.forEach(section => section.style.display = "none");
+        document.getElementById(id).style.display = "block";
+    }
+</script>
+
+</body>
+</html>
