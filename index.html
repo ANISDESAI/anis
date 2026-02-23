@@ -14,16 +14,15 @@ body {
   min-height:100vh;
   color:#2c3e50;
   overflow-x:hidden;
-  padding-bottom:50px;
 }
 
 /* Header */
 header {
   text-align:center;
-  padding:60px 15px 40px;
+  padding:70px 15px 50px;
 }
 header h1 {
-  font-size:36px;
+  font-size:38px;
   font-weight:700;
   color:#006400;
   text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
@@ -116,68 +115,34 @@ th {
 }
 tr:hover td {background: rgba(0,200,83,0.1);}
 
-/* Analog Clock */
-.clock-container {
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:20px;
-  flex-wrap:wrap;
-  margin-top:20px;
-}
-.clock {
-  width:150px;
-  height:150px;
-  border:6px solid #006400;
-  border-radius:50%;
-  background:rgba(255,255,255,0.7);
-  position:relative;
-  box-shadow:0 5px 20px rgba(0,0,0,0.2);
-}
-.hand {
-  position:absolute;
-  width:50%;
-  background:#006400;
-  top:50%;
-  left:50%;
-  transform-origin:100%;
-  border-radius:2px;
-}
-.hour {height:4px;}
-.minute {height:3px;background:#2e7d32;}
-.second {height:2px;background:#ff3d00;}
-.center-dot {
-  width:12px;
-  height:12px;
-  background:#006400;
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  border-radius:50%;
-}
-
 /* Prayer Grid */
 .prayer-grid {
-  display:grid;
-  grid-template-columns: repeat(auto-fit,minmax(100px,1fr));
+  display:flex;
+  flex-wrap:wrap;
   gap:15px;
-  margin-top:15px;
+  margin-top:20px;
+  justify-content:center;
 }
 .prayer-box {
-  background: rgba(0,200,83,0.2);
-  backdrop-filter: blur(6px);
-  padding:15px;
-  border-radius:15px;
+  flex:1 1 140px;
+  background: rgba(255,255,255,0.5);
+  backdrop-filter: blur(10px);
+  border-radius:20px;
+  padding:20px;
   text-align:center;
-  font-weight:600;
-  font-size:16px;
-  color:#004d00;
-  transition: transform 0.3s ease;
+  font-weight:700;
+  color:#006400;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.prayer-box.highlight {
+  border: 2px solid gold;
+  color: #006400;
+  background: rgba(255,255,255,0.7);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.15);
 }
 .prayer-box:hover {
-  transform: translateY(-3px) scale(1.05);
-  box-shadow:0 5px 20px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
+  box-shadow:0 8px 25px rgba(0,0,0,0.15);
 }
 
 /* Responsive */
@@ -188,6 +153,7 @@ tr:hover td {background: rgba(0,200,83,0.1);}
   table{min-width:400px;}
   th,td{padding:10px;font-size:14px;}
   .button-group{flex-direction:column;}
+  .prayer-box{flex:1 1 45%;}
 }
 @media(max-width:480px){
   header h1{font-size:26px;}
@@ -195,6 +161,7 @@ tr:hover td {background: rgba(0,200,83,0.1);}
   .counter{font-size:24px;}
   table{min-width:350px;}
   th,td{padding:8px;font-size:13px;}
+  .prayer-box{flex:1 1 100%;}
 }
 </style>
 </head>
@@ -208,39 +175,26 @@ tr:hover td {background: rgba(0,200,83,0.1);}
 
 <div class="container">
 
-<!-- Live Clock -->
+<!-- Prayer Timings Card with Live Clock -->
 <div class="card">
-  <h2>Current Time</h2>
-  <div class="clock-container">
-    <div class="clock" id="mainClock">
-      <div class="hand hour" id="hourHand"></div>
-      <div class="hand minute" id="minuteHand"></div>
-      <div class="hand second" id="secondHand"></div>
-      <div class="center-dot"></div>
-    </div>
-  </div>
+<h2>Prayer Timings</h2>
+<div class="prayer-grid">
+  <div class="prayer-box" id="FajrBox">Fajr<br><span id="fajrClock">--:--</span></div>
+  <div class="prayer-box" id="DhuhrBox">Dhuhr<br><span id="dhuhrClock">--:--</span></div>
+  <div class="prayer-box" id="AsrBox">Asr<br><span id="asrClock">--:--</span></div>
+  <div class="prayer-box" id="MaghribBox">Maghrib<br><span id="maghribClock">--:--</span></div>
+  <div class="prayer-box" id="IshaBox">Isha<br><span id="ishaClock">--:--</span></div>
+</div>
 </div>
 
-<!-- Prayer Timings -->
-<div class="card">
-  <h2>Prayer Timings</h2>
-  <div class="prayer-grid">
-    <div class="prayer-box">Fajr<br><span id="fajrTime">5:15 AM</span></div>
-    <div class="prayer-box">Dhuhr<br><span id="dhuhrTime">1:30 PM</span></div>
-    <div class="prayer-box">Asr<br><span id="asrTime">4:45 PM</span></div>
-    <div class="prayer-box">Maghrib<br><span id="maghribTime">6:30 PM</span></div>
-    <div class="prayer-box">Isha<br><span id="ishaTime">8:00 PM</span></div>
-  </div>
-</div>
-
-<!-- Donation Card -->
+<!-- Total Donation Card -->
 <div class="card">
 <h2>Total Donation & Balance</h2>
 <div class="counter" id="donationCounter">₹ 0</div>
 <div style="margin-top:10px;font-size:16px;">Balance: ₹ <span id="balance">0</span></div>
 </div>
 
-<!-- Manage Donations & Funds -->
+<!-- Manage Donations & Funds Card -->
 <div class="card">
 <h2>Manage Donations & Funds</h2>
 <div class="button-group">
@@ -277,7 +231,6 @@ tr:hover td {background: rgba(0,200,83,0.1);}
 </div>
 
 <script>
-// Donation & Kharcha
 const API_URL = "https://script.google.com/macros/s/AKfycbx4lP00Q3kbRpq3ajbBxPDpgSp7QHecEKcoPNtH4mhqalnsDbAQlGB2pLSKtXIOya1i/exec"; 
 let donationList=[], kharchaList=[];
 
@@ -291,7 +244,10 @@ function showSection(id){
 function formatIndianDate(isoDate){
   if(!isoDate) return "-";
   const d = new Date(isoDate);
-  return `${("0"+d.getDate()).slice(-2)}-${("0"+(d.getMonth()+1)).slice(-2)}-${d.getFullYear()}`;
+  const day = ("0"+d.getDate()).slice(-2);
+  const month = ("0"+(d.getMonth()+1)).slice(-2);
+  const year = d.getFullYear();
+  return `${day}-${month}-${year}`;
 }
 
 async function fetchData(){
@@ -347,19 +303,45 @@ function animateCounter(target){
   },15);
 }
 
-// Analog Clock
-function updateClock(){
+// Live Prayer Clock
+const prayerTimes = {
+  Fajr: "05:15",
+  Dhuhr: "13:30",
+  Asr: "16:45",
+  Maghrib: "18:30",
+  Isha: "20:00"
+};
+
+function highlightNextPrayer(){
   const now = new Date();
-  const sec = now.getSeconds();
-  const min = now.getMinutes();
-  const hr  = now.getHours();
-  document.getElementById('secondHand').style.transform = `rotate(${sec*6}deg)`;
-  document.getElementById('minuteHand').style.transform = `rotate(${min*6}deg)`;
-  document.getElementById('hourHand').style.transform = `rotate(${hr*30 + min*0.5}deg)`;
+  const currentMinutes = now.getHours()*60 + now.getMinutes();
+  let nextPrayer = null;
+  Object.keys(prayerTimes).forEach(prayer=>{
+    const [h,m] = prayerTimes[prayer].split(":").map(Number);
+    const prayerMinutes = h*60 + m;
+    if(prayerMinutes > currentMinutes && !nextPrayer) nextPrayer = prayer;
+  });
+  if(!nextPrayer) nextPrayer = "Fajr"; // Next day
+  // Remove previous highlight
+  document.querySelectorAll(".prayer-box").forEach(box=>box.classList.remove("highlight"));
+  document.getElementById(nextPrayer+"Box").classList.add("highlight");
 }
 
-setInterval(updateClock,1000);
-updateClock();
+// Update clock display every second
+function updatePrayerClock(){
+  Object.keys(prayerTimes).forEach(prayer=>{
+    const [h24,m] = prayerTimes[prayer].split(":").map(Number);
+    let ampm = h24>=12?"PM":"AM";
+    let h12 = h24%12||12;
+    document.getElementById(prayer.toLowerCase()+"Clock").innerText = `${h12.toString().padStart(2,"0")}:${m.toString().padStart(2,"0")} ${ampm}`;
+  });
+  highlightNextPrayer();
+}
+
+setInterval(updatePrayerClock,1000);
+updatePrayerClock();
+
+// Initialize
 fetchData();
 </script>
 </body>
