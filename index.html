@@ -20,7 +20,6 @@ body {
 header {
   text-align:center;
   padding:70px 15px 50px;
-  background: transparent;
 }
 header h1 {
   font-size:38px;
@@ -135,6 +134,12 @@ tr:hover td {background: rgba(0,200,83,0.1);}
   color:#006400;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+.prayer-box.highlight {
+  border: 2px solid gold;
+  color: #006400;
+  background: rgba(255,255,255,0.7);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+}
 .prayer-box:hover {
   transform: translateY(-2px);
   box-shadow:0 8px 25px rgba(0,0,0,0.15);
@@ -170,15 +175,15 @@ tr:hover td {background: rgba(0,200,83,0.1);}
 
 <div class="container">
 
-<!-- Prayer Timings Card -->
+<!-- Prayer Timings Card with Live Clock -->
 <div class="card">
 <h2>Prayer Timings</h2>
 <div class="prayer-grid">
-  <div class="prayer-box">Fajr<br>5:15 AM</div>
-  <div class="prayer-box">Dhuhr<br>1:30 PM</div>
-  <div class="prayer-box">Asar<br>4:45 PM</div>
-  <div class="prayer-box">Maghrib<br>6:30 PM</div>
-  <div class="prayer-box">Isha<br>8:00 PM</div>
+  <div class="prayer-box" id="FajrBox">Fajr<br><span id="fajrClock">--:--</span></div>
+  <div class="prayer-box" id="DhuhrBox">Dhuhr<br><span id="dhuhrClock">--:--</span></div>
+  <div class="prayer-box" id="AsrBox">Asar<br><span id="asrClock">--:--</span></div>
+  <div class="prayer-box" id="MaghribBox">Maghrib<br><span id="maghribClock">--:--</span></div>
+  <div class="prayer-box" id="IshaBox">Isha<br><span id="ishaClock">--:--</span></div>
 </div>
 </div>
 
@@ -197,7 +202,7 @@ tr:hover td {background: rgba(0,200,83,0.1);}
   <button onclick="showSection('kharcha')">Fund Used List</button>
 </div>
 
-<!-- Donation Section -->
+<!-- Donation Table -->
 <div id="donation" style="display:none;" class="table-wrapper">
 <table id="donationTable">
 <tr>
@@ -210,7 +215,7 @@ tr:hover td {background: rgba(0,200,83,0.1);}
 </table>
 </div>
 
-<!-- Kharcha Section -->
+<!-- Kharcha Table -->
 <div id="kharcha" style="display:none;" class="table-wrapper">
 <table id="kharchaTable">
 <tr>
@@ -298,6 +303,45 @@ function animateCounter(target){
   },15);
 }
 
+// Live Prayer Clock
+const prayerTimes = {
+  Fajr: "05:15",
+  Dhuhr: "13:30",
+  Asr: "16:45",
+  Maghrib: "18:30",
+  Isha: "20:00"
+};
+
+function highlightNextPrayer(){
+  const now = new Date();
+  const currentMinutes = now.getHours()*60 + now.getMinutes();
+  let nextPrayer = null;
+  Object.keys(prayerTimes).forEach(prayer=>{
+    const [h,m] = prayerTimes[prayer].split(":").map(Number);
+    const prayerMinutes = h*60 + m;
+    if(prayerMinutes > currentMinutes && !nextPrayer) nextPrayer = prayer;
+  });
+  if(!nextPrayer) nextPrayer = "Fajr"; // Next day
+  // Remove previous highlight
+  document.querySelectorAll(".prayer-box").forEach(box=>box.classList.remove("highlight"));
+  document.getElementById(nextPrayer+"Box").classList.add("highlight");
+}
+
+// Update clock display every second
+function updatePrayerClock(){
+  Object.keys(prayerTimes).forEach(prayer=>{
+    const [h24,m] = prayerTimes[prayer].split(":").map(Number);
+    let ampm = h24>=12?"PM":"AM";
+    let h12 = h24%12||12;
+    document.getElementById(prayer.toLowerCase()+"Clock").innerText = `${h12.toString().padStart(2,"0")}:${m.toString().padStart(2,"0")} ${ampm}`;
+  });
+  highlightNextPrayer();
+}
+
+setInterval(updatePrayerClock,1000);
+updatePrayerClock();
+
+// Initialize
 fetchData();
 </script>
 </body>
