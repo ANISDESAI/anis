@@ -23,7 +23,7 @@ header {
   padding:60px 15px 40px;
 }
 header h1 {
-  font-size:38px;
+  font-size:36px;
   font-weight:700;
   color:#006400;
   text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
@@ -123,14 +123,14 @@ tr:hover td {background: rgba(0,200,83,0.1);}
   align-items:center;
   gap:20px;
   flex-wrap:wrap;
-  margin-top:25px;
+  margin-top:20px;
 }
 .clock {
-  width:140px;
-  height:140px;
+  width:150px;
+  height:150px;
   border:6px solid #006400;
   border-radius:50%;
-  background:rgba(255,255,255,0.6);
+  background:rgba(255,255,255,0.7);
   position:relative;
   box-shadow:0 5px 20px rgba(0,0,0,0.2);
 }
@@ -141,7 +141,6 @@ tr:hover td {background: rgba(0,200,83,0.1);}
   top:50%;
   left:50%;
   transform-origin:100%;
-  transform:rotate(90deg);
   border-radius:2px;
 }
 .hour {height:4px;}
@@ -156,6 +155,29 @@ tr:hover td {background: rgba(0,200,83,0.1);}
   left:50%;
   transform:translate(-50%,-50%);
   border-radius:50%;
+}
+
+/* Prayer Grid */
+.prayer-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(100px,1fr));
+  gap:15px;
+  margin-top:15px;
+}
+.prayer-box {
+  background: rgba(0,200,83,0.2);
+  backdrop-filter: blur(6px);
+  padding:15px;
+  border-radius:15px;
+  text-align:center;
+  font-weight:600;
+  font-size:16px;
+  color:#004d00;
+  transition: transform 0.3s ease;
+}
+.prayer-box:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow:0 5px 20px rgba(0,0,0,0.15);
 }
 
 /* Responsive */
@@ -186,7 +208,7 @@ tr:hover td {background: rgba(0,200,83,0.1);}
 
 <div class="container">
 
-<!-- Prayer Clocks Card -->
+<!-- Live Clock -->
 <div class="card">
   <h2>Current Time</h2>
   <div class="clock-container">
@@ -199,14 +221,26 @@ tr:hover td {background: rgba(0,200,83,0.1);}
   </div>
 </div>
 
-<!-- Total Donation Card -->
+<!-- Prayer Timings -->
+<div class="card">
+  <h2>Prayer Timings</h2>
+  <div class="prayer-grid">
+    <div class="prayer-box">Fajr<br><span id="fajrTime">5:15 AM</span></div>
+    <div class="prayer-box">Dhuhr<br><span id="dhuhrTime">1:30 PM</span></div>
+    <div class="prayer-box">Asr<br><span id="asrTime">4:45 PM</span></div>
+    <div class="prayer-box">Maghrib<br><span id="maghribTime">6:30 PM</span></div>
+    <div class="prayer-box">Isha<br><span id="ishaTime">8:00 PM</span></div>
+  </div>
+</div>
+
+<!-- Donation Card -->
 <div class="card">
 <h2>Total Donation & Balance</h2>
 <div class="counter" id="donationCounter">₹ 0</div>
 <div style="margin-top:10px;font-size:16px;">Balance: ₹ <span id="balance">0</span></div>
 </div>
 
-<!-- Manage Donations & Funds Card -->
+<!-- Manage Donations & Funds -->
 <div class="card">
 <h2>Manage Donations & Funds</h2>
 <div class="button-group">
@@ -243,7 +277,7 @@ tr:hover td {background: rgba(0,200,83,0.1);}
 </div>
 
 <script>
-// Donation & Kharcha Functions
+// Donation & Kharcha
 const API_URL = "https://script.google.com/macros/s/AKfycbx4lP00Q3kbRpq3ajbBxPDpgSp7QHecEKcoPNtH4mhqalnsDbAQlGB2pLSKtXIOya1i/exec"; 
 let donationList=[], kharchaList=[];
 
@@ -257,10 +291,7 @@ function showSection(id){
 function formatIndianDate(isoDate){
   if(!isoDate) return "-";
   const d = new Date(isoDate);
-  const day = ("0"+d.getDate()).slice(-2);
-  const month = ("0"+(d.getMonth()+1)).slice(-2);
-  const year = d.getFullYear();
-  return `${day}-${month}-${year}`;
+  return `${("0"+d.getDate()).slice(-2)}-${("0"+(d.getMonth()+1)).slice(-2)}-${d.getFullYear()}`;
 }
 
 async function fetchData(){
@@ -322,16 +353,13 @@ function updateClock(){
   const sec = now.getSeconds();
   const min = now.getMinutes();
   const hr  = now.getHours();
-
   document.getElementById('secondHand').style.transform = `rotate(${sec*6}deg)`;
   document.getElementById('minuteHand').style.transform = `rotate(${min*6}deg)`;
   document.getElementById('hourHand').style.transform = `rotate(${hr*30 + min*0.5}deg)`;
 }
 
-setInterval(updateClock, 1000);
+setInterval(updateClock,1000);
 updateClock();
-
-// Initialize
 fetchData();
 </script>
 </body>
