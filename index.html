@@ -1,200 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Irfaniya Madarsa - Donations & Kharcha</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        /* Global Styles */
-        * {
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Irfaniya Masjid & Madarsa</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Noto+Nastaliq+Urdu:wght@600&display=swap" rel="stylesheet">
+<style>
+/* Base Styles */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Poppins',sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color:white;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+body::before{
+  content:"";
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:url("https://www.transparenttextures.com/patterns/arabesque.png");
+  opacity:0.05;
+  pointer-events:none;
+}
 
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            background: #f0f4f8;
-            color: #333;
-        }
+/* Moon Animation */
+.moon{
+  position:absolute;
+  top:60px;
+  right:80px;
+  width:70px;
+  height:70px;
+  background:#fff;
+  border-radius:50%;
+  box-shadow:0 0 25px rgba(255,255,255,0.8);
+  animation:float 6s ease-in-out infinite;
+}
+.moon::after{
+  content:"";
+  position:absolute;
+  top:0; left:22px;
+  width:70px;height:70px;
+  background:#0f2027;
+  border-radius:50%;
+}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-15px);}}
 
-        header {
-            background: linear-gradient(90deg, #0d6efd, #198754);
-            color: #fff;
-            text-align: center;
-            padding: 30px 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
+/* Header */
+header{text-align:center;padding:80px 15px 40px;}
+header h1{font-size:36px;font-weight:700;letter-spacing:1px;}
+.urdu{font-family:'Noto Nastaliq Urdu',serif;font-size:28px;margin-top:8px;opacity:0.95;}
+.subtitle{margin-top:8px;font-weight:300;opacity:0.85;letter-spacing:0.5px;}
 
-        header h1 {
-            margin: 0;
-            font-size: 2rem;
-        }
+/* Container & Cards */
+.container{max-width:1000px;margin:auto;padding:15px;}
+.card{
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(18px);
+  padding:25px;
+  border-radius:25px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.6);
+  margin-bottom:25px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover{transform:translateY(-5px);box-shadow:0 25px 60px rgba(0,0,0,0.7);}
 
-        header p {
-            margin: 5px 0 0;
-            font-size: 1.1rem;
-        }
+.counter{font-size:32px;font-weight:700;color:#00e676;margin-top:8px;}
+.button-group{display:flex;flex-direction:column;gap:14px;margin-top:20px;}
 
-        .container {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 0 15px;
-        }
+/* Buttons */
+button{
+  padding:14px;
+  border:none;
+  border-radius:30px;
+  font-size:16px;
+  font-weight:500;
+  background:linear-gradient(135deg,#00e676,#00bfa5);
+  color:#fff;
+  cursor:pointer;
+  transition:0.3s;
+}
+button:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 25px rgba(0,0,0,0.5);
+}
 
-        /* Buttons */
-        .btn {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            font-size: 16px;
-            font-weight: 500;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: #fff;
-        }
+/* Table Styles */
+.table-wrapper{overflow-x:auto;margin-top:15px;}
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:500px;
+}
+th,td{
+  padding:12px;
+  text-align:center;
+  border-bottom:1px solid rgba(255,255,255,0.3);
+  white-space:nowrap;
+  transition: background 0.3s ease;
+}
+th{
+  background:rgba(0,0,0,0.5);
+  font-weight:600;
+}
+tr:hover td{background:rgba(255,255,255,0.1);}
 
-        .btn-donation { background: #0d6efd; }
-        .btn-donation:hover { background: #0b5ed7; }
-
-        .btn-kharcha { background: #198754; }
-        .btn-kharcha:hover { background: #146c43; }
-
-        .btn-total { background: #ffc107; color: #333; }
-        .btn-total:hover { background: #e0a800; }
-
-        /* Sections */
-        .section {
-            display: none;
-            background: #fff;
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 12px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-        }
-
-        .section h3 {
-            margin-top: 0;
-            color: #0d6efd;
-        }
-
-        /* Tables */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: center;
-        }
-
-        th {
-            background: #0d6efd;
-            color: #fff;
-            font-weight: 500;
-        }
-
-        tr:nth-child(even) {
-            background: #f2f6fc;
-        }
-
-        tr:hover {
-            background: #e2ecff;
-        }
-
-        /* Total Box */
-        .total-box {
-            background: #ffc107;
-            padding: 15px;
-            border-radius: 10px;
-            font-weight: 500;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-
-        /* Responsive */
-        @media(max-width: 600px){
-            header h1 { font-size: 1.5rem; }
-            .btn { font-size: 14px; }
-            th, td { padding: 8px; }
-        }
-    </style>
+/* Responsive */
+@media(max-width:768px){
+  header h1{font-size:30px;}
+  .urdu{font-size:24px;}
+  .counter{font-size:28px;}
+  table{min-width:400px;}
+  th,td{padding:10px;font-size:14px;}
+}
+@media(max-width:480px){
+  header h1{font-size:24px;}
+  .urdu{font-size:20px;}
+  .counter{font-size:24px;}
+  table{min-width:350px;}
+  th,td{padding:8px;font-size:13px;}
+  .button-group{gap:10px;}
+}
+</style>
 </head>
 <body>
+<div class="moon"></div>
 
 <header>
-    <h1>Irfaniya Madarsa</h1>
-    <p>Donation & Kharcha Details</p>
+<h1>🕌 Irfaniya Masjid & Madarsa</h1>
+<div class="urdu">مدرسہ عرفانیہ مسجد</div>
+<div class="subtitle">Donation & Funds Management</div>
 </header>
 
 <div class="container">
 
-    <button class="btn btn-donation" onclick="showSection('donation')">Donation Given List</button>
-    <button class="btn btn-kharcha" onclick="showSection('kharcha')">Kharcha Details</button>
-    <button class="btn btn-total" onclick="showSection('total')">Total & Balance</button>
+<div class="card">
+<h2>Total Donation & Balance</h2>
+<div class="counter" id="donationCounter">₹ 0</div>
+<div style="margin-top:10px;font-size:16px;">Balance: ₹ <span id="balance">0</span></div>
+</div>
 
-    <!-- Donation Section -->
-    <div id="donation" class="section">
-        <h3>Donation List</h3>
-        <table>
-            <tr>
-                <th>Name</th>
-                <th>Amount</th>
-            </tr>
-            <tr>
-                <td>Ahmed</td>
-                <td>5000</td>
-            </tr>
-            <tr>
-                <td>Rahman</td>
-                <td>3000</td>
-            </tr>
-        </table>
-    </div>
+<div class="card">
+<h2>Manage Donations & Funds</h2>
+<div class="button-group">
+<button onclick="showSection('donation')">Donation List</button>
+<button onclick="showSection('kharcha')">Fund Used List</button>
+</div>
 
-    <!-- Kharcha Section -->
-    <div id="kharcha" class="section">
-        <h3>Kharcha Details</h3>
-        <table>
-            <tr>
-                <th>Purpose</th>
-                <th>Amount</th>
-            </tr>
-            <tr>
-                <td>Electric Bill</td>
-                <td>2000</td>
-            </tr>
-            <tr>
-                <td>Food</td>
-                <td>1500</td>
-            </tr>
-        </table>
-    </div>
+<!-- Donation Section -->
+<div id="donation" style="display:none;" class="table-wrapper">
+<table id="donationTable">
+<tr>
+<th>Donation #</th>
+<th>Name</th>
+<th>Amount (₹)</th>
+<th>Date</th>
+<th>Payment Method</th>
+</tr>
+</table>
+</div>
 
-    <!-- Total Section -->
-    <div id="total" class="section">
-        <h3>Total & Balance</h3>
-        <div class="total-box">
-            <p><strong>Total Donation:</strong> 8000</p>
-            <p><strong>Total Kharcha:</strong> 3500</p>
-            <p><strong>Balance:</strong> 4500</p>
-        </div>
-    </div>
+<!-- Kharcha Section -->
+<div id="kharcha" style="display:none;" class="table-wrapper">
+<table id="kharchaTable">
+<tr>
+<th>Kharcha #</th>
+<th>Purpose</th>
+<th>Amount (₹)</th>
+<th>Date</th>
+<th>Paid From</th>
+</tr>
+</table>
+</div>
 
 </div>
 
 <script>
-    function showSection(id) {
-        const sections = document.querySelectorAll('.section');
-        sections.forEach(section => section.style.display = "none");
-        document.getElementById(id).style.display = "block";
-    }
-</script>
+const API_URL = "https://script.google.com/macros/s/AKfycbx4lP00Q3kbRpq3ajbBxPDpgSp7QHecEKcoPNtH4mhqalnsDbAQlGB2pLSKtXIOya1i/exec"; // Replace with your Apps Script Web App URL
+let donationList=[], kharchaList=[];
 
+function showSection(id){
+  document.getElementById('donation').style.display='none';
+  document.getElementById('kharcha').style.display='none';
+  document.getElementById(id).style.display='block';
+  calculateTotals();
+}
+
+// Format ISO date to Indian format DD-MM-YYYY
+function formatIndianDate(isoDate){
+  if(!isoDate) return "-";
+  const d = new Date(isoDate);
+  const day = ("0"+d.getDate()).slice(-2);
+  const month = ("0"+(d.getMonth()+1)).slice(-2);
+  const year = d.getFullYear();
+  return `${day}-${month}-${year}`;
+}
+
+async function fetchData(){
+  try{
+    const res = await fetch(API_URL);
+    const data = await res.json();
+    donationList = data.donations;
+    kharchaList = data.kharcha;
+    renderTables();
+    calculateTotals();
+  }catch(err){console.error(err);}
+}
+
+function renderTables(){
+  // Donation Table
+  const dTable=document.getElementById('donationTable');
+  dTable.innerHTML="<tr><th>Donation #</th><th>Name</th><th>Amount (₹)</th><th>Date</th><th>Payment Method</th></tr>";
+  donationList.forEach((d,i)=>{
+    let row=dTable.insertRow();
+    row.insertCell(0).innerText=i+1;
+    row.insertCell(1).innerText=d.Name || "Anonymous";
+    row.insertCell(2).innerText=d.Amount;
+    row.insertCell(3).innerText = formatIndianDate(d.Date);
+    row.insertCell(4).innerText=d.Method || "-";
+  });
+
+  // Kharcha Table
+  const kTable=document.getElementById('kharchaTable');
+  kTable.innerHTML="<tr><th>Kharcha #</th><th>Purpose</th><th>Amount (₹)</th><th>Date</th><th>Paid From</th></tr>";
+  kharchaList.forEach((k,i)=>{
+    let row=kTable.insertRow();
+    row.insertCell(0).innerText=i+1;
+    row.insertCell(1).innerText=k.Purpose;
+    row.insertCell(2).innerText=k.Amount;
+    row.insertCell(3).innerText = formatIndianDate(k.Date);
+    row.insertCell(4).innerText = k.PaidFrom || "-";
+  });
+}
+
+function calculateTotals(){
+  let totalDonation = donationList.reduce((sum,d)=>sum+parseInt(d.Amount),0);
+  let totalKharcha = kharchaList.reduce((sum,k)=>sum+parseInt(k.Amount),0);
+  document.getElementById('balance').innerText = totalDonation - totalKharcha;
+  animateCounter(totalDonation);
+}
+
+function animateCounter(target){
+  let counter=document.getElementById('donationCounter');
+  let count=0;
+  let step=Math.ceil(target/120);
+  let interval=setInterval(()=>{
+    count+=step;
+    if(count>=target){count=target;clearInterval(interval);}
+    counter.innerText="₹ "+count;
+  },15);
+}
+
+// Initialize
+fetchData();
+</script>
 </body>
 </html>
