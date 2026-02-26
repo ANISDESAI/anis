@@ -71,7 +71,7 @@ header h1 {
   gap: 15px;
   margin-top: 25px;
   justify-content: center;
-  flex-wrap: nowrap;  /* No wrapping */
+  flex-wrap: nowrap;
 }
 .button-group button {
   flex: 1;
@@ -91,21 +91,22 @@ header h1 {
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
-/* Tables - Normal Style */
+/* Tables */
 .table-wrapper {
-  overflow-x:auto;
   margin-top:20px;
+  max-height:400px;     /* Max height, vertical scroll if needed */
+  overflow-y:auto;
+  overflow-x:hidden;    /* Prevent horizontal scroll */
 }
 table {
   width:100%;
   border-collapse:collapse;
-  min-width:500px;
+  font-size:14px;
 }
 th, td {
-  padding:14px;
+  padding:10px;
   text-align:center;
   border-bottom:1px solid rgba(0,0,0,0.1);
-  transition: background 0.3s ease;
 }
 th {
   background: rgba(0,200,83,0.3);
@@ -113,34 +114,6 @@ th {
   color:#004d00;
 }
 tr:hover td {background: rgba(0,200,83,0.1);}
-
-/* Responsive Table - Mobile */
-@media(max-width:768px){
-  table, thead, tbody, th, td, tr {display:block;}
-  thead tr {display:none;} /* Hide header */
-  tr {
-    margin-bottom:15px;
-    background: rgba(255,255,255,0.7);
-    border-radius:15px;
-    padding:10px;
-  }
-  td {
-    text-align:left;
-    padding:8px;
-    border:none;
-    position: relative;
-    padding-left: 50%;
-  }
-  td::before {
-    position:absolute;
-    left:15px;
-    width:45%;
-    white-space: nowrap;
-    font-weight:700;
-    content:attr(data-label);
-  }
-  .prayer-box{flex:1 1 45%;}
-}
 
 /* Prayer Grid */
 .prayer-grid {
@@ -173,10 +146,18 @@ tr:hover td {background: rgba(0,200,83,0.1);}
 }
 
 /* Responsive */
+@media(max-width:768px){
+  header h1{font-size:32px;}
+  .urdu{font-size:24px;}
+  .counter{font-size:30px;}
+  th, td{padding:8px;font-size:13px;}
+  .prayer-box{flex:1 1 45%;}
+}
 @media(max-width:480px){
   header h1{font-size:26px;}
   .urdu{font-size:20px;}
   .counter{font-size:24px;}
+  th, td{padding:6px;font-size:12px;}
   .prayer-box{flex:1 1 100%;}
   .button-group button {
     padding: 10px 16px;
@@ -286,22 +267,22 @@ function renderTables(){
   dTable.innerHTML="<tr><th>Donation #</th><th>Name</th><th>Amount (₹)</th><th>Date</th><th>Payment Method</th></tr>";
   donationList.forEach((d,i)=>{
     let row=dTable.insertRow();
-    row.insertCell(0).innerText=i+1; row.cells[0].setAttribute('data-label','Donation #');
-    row.insertCell(1).innerText=d.Name || "Anonymous"; row.cells[1].setAttribute('data-label','Name');
-    row.insertCell(2).innerText=d.Amount; row.cells[2].setAttribute('data-label','Amount (₹)');
-    row.insertCell(3).innerText = formatIndianDate(d.Date); row.cells[3].setAttribute('data-label','Date');
-    row.insertCell(4).innerText=d.Method || "-"; row.cells[4].setAttribute('data-label','Payment Method');
+    row.insertCell(0).innerText=i+1;
+    row.insertCell(1).innerText=d.Name || "Anonymous";
+    row.insertCell(2).innerText=d.Amount;
+    row.insertCell(3).innerText = formatIndianDate(d.Date);
+    row.insertCell(4).innerText=d.Method || "-";
   });
 
   const kTable=document.getElementById('kharchaTable');
   kTable.innerHTML="<tr><th>Kharcha #</th><th>Purpose</th><th>Amount (₹)</th><th>Date</th><th>Paid From</th></tr>";
   kharchaList.forEach((k,i)=>{
     let row=kTable.insertRow();
-    row.insertCell(0).innerText=i+1; row.cells[0].setAttribute('data-label','Kharcha #');
-    row.insertCell(1).innerText=k.Purpose; row.cells[1].setAttribute('data-label','Purpose');
-    row.insertCell(2).innerText=k.Amount; row.cells[2].setAttribute('data-label','Amount (₹)');
-    row.insertCell(3).innerText = formatIndianDate(k.Date); row.cells[3].setAttribute('data-label','Date');
-    row.insertCell(4).innerText = k.PaidFrom || "-"; row.cells[4].setAttribute('data-label','Paid From');
+    row.insertCell(0).innerText=i+1;
+    row.insertCell(1).innerText=k.Purpose;
+    row.insertCell(2).innerText=k.Amount;
+    row.insertCell(3).innerText = formatIndianDate(k.Date);
+    row.insertCell(4).innerText = k.PaidFrom || "-";
   });
 }
 
