@@ -71,24 +71,29 @@ th,td{
 }
 th{background:rgba(0,200,83,0.3);color:#004d00;}
 
-/* Prayer Grid Layout (2 Columns Proper Alignment) */
+/* Prayer Grid */
 .prayer-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:12px 30px;
+  gap:15px 40px;
   margin-top:15px;
 }
 
 .prayer-box{
   background:rgba(255,255,255,0.5);
   backdrop-filter:blur(8px);
-  padding:10px 15px;
+  padding:12px;
   border-radius:12px;
   font-size:14px;
   font-weight:600;
   color:#006400;
-  display:flex;
-  justify-content:space-between;
+  text-align:center;
+}
+
+.prayer-time{
+  display:block;
+  margin-top:4px;
+  font-weight:500;
 }
 
 .prayer-box.highlight{
@@ -120,16 +125,38 @@ th{background:rgba(0,200,83,0.3);color:#004d00;}
 <h2>Prayer Timings</h2>
 
 <div class="prayer-grid">
-  <div class="prayer-box" id="FajrBox">Fajr <span id="fajrClock"></span></div>
-  <div class="prayer-box" id="MaghribBox">Maghrib <span id="maghribClock"></span></div>
 
-  <div class="prayer-box" id="DhuhrBox">Zohar <span id="dhuhrClock"></span></div>
-  <div class="prayer-box" id="IshaBox">Isha <span id="ishaClock"></span></div>
+  <div class="prayer-box" id="FajrBox">
+    Fajr
+    <span class="prayer-time" id="fajrClock"></span>
+  </div>
 
-  <div class="prayer-box" id="AsrBox">Asar <span id="asrClock"></span></div>
-  <div class="prayer-box" id="JumaBox">Juma <span>01:30 PM</span></div>
+  <div class="prayer-box" id="MaghribBox">
+    Maghrib
+    <span class="prayer-time" id="maghribClock"></span>
+  </div>
+
+  <div class="prayer-box" id="DhuhrBox">
+    Zohar
+    <span class="prayer-time" id="dhuhrClock"></span>
+  </div>
+
+  <div class="prayer-box" id="IshaBox">
+    Isha
+    <span class="prayer-time" id="ishaClock"></span>
+  </div>
+
+  <div class="prayer-box" id="AsrBox">
+    Asar
+    <span class="prayer-time" id="asrClock"></span>
+  </div>
+
+  <div class="prayer-box" id="JumaBox">
+    Juma
+    <span class="prayer-time">01:30 PM</span>
+  </div>
+
 </div>
-
 </div>
 
 <!-- Donation Card -->
@@ -178,6 +205,15 @@ function showSection(id){
   document.getElementById(id).style.display='block';
 }
 
+function formatIndianDate(dateString){
+  if(!dateString) return "-";
+  const d=new Date(dateString);
+  const day=("0"+d.getDate()).slice(-2);
+  const month=("0"+(d.getMonth()+1)).slice(-2);
+  const year=d.getFullYear();
+  return `${day}-${month}-${year}`;
+}
+
 async function fetchData(){
   try{
     const res=await fetch(API_URL);
@@ -196,7 +232,7 @@ function renderTables(){
     r.insertCell(0).innerText=i+1;
     r.insertCell(1).innerText=d.Name||"Anonymous";
     r.insertCell(2).innerText=d.Amount;
-    r.insertCell(3).innerText=d.Date;
+    r.insertCell(3).innerText=formatIndianDate(d.Date);
     r.insertCell(4).innerText=d.Method||"-";
   });
 
@@ -206,7 +242,7 @@ function renderTables(){
     r.insertCell(0).innerText=i+1;
     r.insertCell(1).innerText=k.Purpose;
     r.insertCell(2).innerText=k.Amount;
-    r.insertCell(3).innerText=k.Date;
+    r.insertCell(3).innerText=formatIndianDate(k.Date);
     r.insertCell(4).innerText=k.PaidFrom||"-";
   });
 }
