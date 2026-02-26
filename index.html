@@ -71,10 +71,10 @@ header h1 {
   gap: 15px;
   margin-top: 25px;
   justify-content: center;
-  flex-wrap: nowrap;
+  flex-wrap: nowrap;  /* No wrapping - always side by side */
 }
 .button-group button {
-  flex: 1;
+  flex: 1;               /* Equal width */
   padding: 12px 20px;
   border: none;
   border-radius: 35px;
@@ -93,20 +93,20 @@ header h1 {
 
 /* Tables */
 .table-wrapper {
+  overflow-x:auto;
   margin-top:20px;
-  max-height:400px;     /* Max height, vertical scroll if needed */
-  overflow-y:auto;
-  overflow-x:hidden;    /* Prevent horizontal scroll */
 }
 table {
   width:100%;
   border-collapse:collapse;
-  font-size:14px;
+  min-width:500px;
 }
 th, td {
-  padding:10px;
+  padding:14px;
   text-align:center;
   border-bottom:1px solid rgba(0,0,0,0.1);
+  white-space:nowrap;
+  transition: background 0.3s ease;
 }
 th {
   background: rgba(0,200,83,0.3);
@@ -150,14 +150,16 @@ tr:hover td {background: rgba(0,200,83,0.1);}
   header h1{font-size:32px;}
   .urdu{font-size:24px;}
   .counter{font-size:30px;}
-  th, td{padding:8px;font-size:13px;}
+  table{min-width:400px;}
+  th,td{padding:10px;font-size:14px;}
   .prayer-box{flex:1 1 45%;}
 }
 @media(max-width:480px){
   header h1{font-size:26px;}
   .urdu{font-size:20px;}
   .counter{font-size:24px;}
-  th, td{padding:6px;font-size:12px;}
+  table{min-width:350px;}
+  th,td{padding:8px;font-size:13px;}
   .prayer-box{flex:1 1 100%;}
   .button-group button {
     padding: 10px 16px;
@@ -323,10 +325,12 @@ function highlightNextPrayer(){
     if(prayerMinutes > currentMinutes && !nextPrayer) nextPrayer = prayer;
   });
   if(!nextPrayer) nextPrayer = "Fajr"; // Next day
+  // Remove previous highlight
   document.querySelectorAll(".prayer-box").forEach(box=>box.classList.remove("highlight"));
   document.getElementById(nextPrayer+"Box").classList.add("highlight");
 }
 
+// Update clock display every second
 function updatePrayerClock(){
   Object.keys(prayerTimes).forEach(prayer=>{
     const [h24,m] = prayerTimes[prayer].split(":").map(Number);
@@ -339,6 +343,8 @@ function updatePrayerClock(){
 
 setInterval(updatePrayerClock,1000);
 updatePrayerClock();
+
+// Initialize
 fetchData();
 </script>
 </body>
