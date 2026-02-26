@@ -71,10 +71,10 @@ header h1 {
   gap: 15px;
   margin-top: 25px;
   justify-content: center;
-  flex-wrap: nowrap;  /* No wrapping - always side by side */
+  flex-wrap: nowrap;
 }
 .button-group button {
-  flex: 1;               /* Equal width */
+  flex: 1;
   padding: 12px 20px;
   border: none;
   border-radius: 35px;
@@ -121,10 +121,15 @@ tr:hover td {background: rgba(0,200,83,0.1);}
   flex-wrap:wrap;
   gap:15px;
   margin-top:20px;
-  justify-content:center;
+  justify-content:space-between;
+}
+.prayer-column {
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+  flex:1 1 45%;
 }
 .prayer-box {
-  flex:1 1 140px;
   background: rgba(255,255,255,0.5);
   backdrop-filter: blur(10px);
   border-radius:20px;
@@ -133,6 +138,7 @@ tr:hover td {background: rgba(0,200,83,0.1);}
   font-weight:700;
   color:#006400;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-size:16px;
 }
 .prayer-box.highlight {
   border: 2px solid gold;
@@ -152,7 +158,8 @@ tr:hover td {background: rgba(0,200,83,0.1);}
   .counter{font-size:30px;}
   table{min-width:400px;}
   th,td{padding:10px;font-size:14px;}
-  .prayer-box{flex:1 1 45%;}
+  .prayer-column{flex:1 1 100%; flex-direction:row; flex-wrap:wrap; justify-content:space-between;}
+  .prayer-box{flex:1 1 48%;}
 }
 @media(max-width:480px){
   header h1{font-size:26px;}
@@ -160,11 +167,12 @@ tr:hover td {background: rgba(0,200,83,0.1);}
   .counter{font-size:24px;}
   table{min-width:350px;}
   th,td{padding:8px;font-size:13px;}
-  .prayer-box{flex:1 1 100%;}
   .button-group button {
     padding: 10px 16px;
     font-size: 14px;
   }
+  .prayer-column{flex:1 1 100%; flex-direction:column;}
+  .prayer-box{flex:1 1 100%;}
 }
 </style>
 </head>
@@ -182,11 +190,16 @@ tr:hover td {background: rgba(0,200,83,0.1);}
 <div class="card">
 <h2>Prayer Timings</h2>
 <div class="prayer-grid">
-  <div class="prayer-box" id="FajrBox">Fajr<br><span id="fajrClock">--:--</span></div>
-  <div class="prayer-box" id="DhuhrBox">Zohar<br><span id="dhuhrClock">--:--</span></div>
-  <div class="prayer-box" id="AsrBox">Asar<br><span id="asrClock">--:--</span></div>
-  <div class="prayer-box" id="MaghribBox">Maghrib<br><span id="maghribClock">--:--</span></div>
-  <div class="prayer-box" id="IshaBox">Isha<br><span id="ishaClock">--:--</span></div>
+  <div class="prayer-column">
+    <div class="prayer-box" id="FajrBox">Fajr<br><span id="fajrClock">--:--</span></div>
+    <div class="prayer-box" id="DhuhrBox">Zohar<br><span id="dhuhrClock">--:--</span></div>
+    <div class="prayer-box" id="AsrBox">Asar<br><span id="asrClock">--:--</span></div>
+  </div>
+  <div class="prayer-column">
+    <div class="prayer-box" id="MaghribBox">Maghrib<br><span id="maghribClock">--:--</span></div>
+    <div class="prayer-box" id="IshaBox">Isha<br><span id="ishaClock">--:--</span></div>
+    <div class="prayer-box" id="JumaBox">Juma<br><span id="jumaClock">01:30 PM</span></div>
+  </div>
 </div>
 </div>
 
@@ -312,7 +325,8 @@ const prayerTimes = {
   Dhuhr: "13:30",
   Asr: "17:35",
   Maghrib: "18:30",
-  Isha: "20:45"
+  Isha: "20:45",
+  Juma: "13:30"
 };
 
 function highlightNextPrayer(){
@@ -325,14 +339,14 @@ function highlightNextPrayer(){
     if(prayerMinutes > currentMinutes && !nextPrayer) nextPrayer = prayer;
   });
   if(!nextPrayer) nextPrayer = "Fajr"; // Next day
-  // Remove previous highlight
   document.querySelectorAll(".prayer-box").forEach(box=>box.classList.remove("highlight"));
-  document.getElementById(nextPrayer+"Box").classList.add("highlight");
+  document.getElementById(nextPrayer+"Box")?.classList.add("highlight");
 }
 
 // Update clock display every second
 function updatePrayerClock(){
   Object.keys(prayerTimes).forEach(prayer=>{
+    if(prayer === "Juma"){ document.getElementById("jumaClock").innerText = "01:30 PM"; return; }
     const [h24,m] = prayerTimes[prayer].split(":").map(Number);
     let ampm = h24>=12?"PM":"AM";
     let h12 = h24%12||12;
@@ -343,8 +357,6 @@ function updatePrayerClock(){
 
 setInterval(updatePrayerClock,1000);
 updatePrayerClock();
-
-// Initialize
 fetchData();
 </script>
 </body>
