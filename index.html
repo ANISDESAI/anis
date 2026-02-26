@@ -15,7 +15,6 @@ body{
   font-family:'Poppins',sans-serif;
   background:linear-gradient(135deg,#a8e6cf,#dcedc1);
   color:#2c3e50;
-  overflow-x:hidden;
 }
 
 /* Header */
@@ -61,7 +60,7 @@ header h1{font-size:34px;color:#006400;}
   cursor:pointer;
 }
 
-/* TABLE */
+/* Table */
 .table-wrapper{overflow-x:auto;margin-top:20px;}
 table{width:100%;border-collapse:collapse;}
 th,td{
@@ -72,39 +71,35 @@ th,td{
 }
 th{background:rgba(0,200,83,0.3);color:#004d00;}
 
-/* SMALL PRAYER GRID */
+/* Prayer Grid Layout (2 Columns Proper Alignment) */
 .prayer-grid{
-  display:flex;
-  justify-content:space-between;
-  gap:20px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px 30px;
   margin-top:15px;
 }
-.prayer-column{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
 
-/* SMALL SIZE LIKE BUTTON */
 .prayer-box{
+  background:rgba(255,255,255,0.5);
+  backdrop-filter:blur(8px);
   padding:10px 15px;
-  border-radius:35px;
+  border-radius:12px;
   font-size:14px;
   font-weight:600;
-  background:linear-gradient(135deg,#00c853,#64dd17);
-  color:white;
-  text-align:center;
+  color:#006400;
+  display:flex;
+  justify-content:space-between;
 }
 
 .prayer-box.highlight{
-  background:linear-gradient(135deg,#ffd700,#ffb300);
-  color:#000;
+  border:2px solid gold;
 }
 
 /* Responsive */
-@media(max-width:768px){
-  .prayer-grid{flex-direction:column;}
+@media(max-width:600px){
+  .prayer-grid{
+    grid-template-columns:1fr 1fr;
+  }
 }
 
 </style>
@@ -125,22 +120,16 @@ th{background:rgba(0,200,83,0.3);color:#004d00;}
 <h2>Prayer Timings</h2>
 
 <div class="prayer-grid">
+  <div class="prayer-box" id="FajrBox">Fajr <span id="fajrClock"></span></div>
+  <div class="prayer-box" id="MaghribBox">Maghrib <span id="maghribClock"></span></div>
 
-  <!-- Right Column -->
-  <div class="prayer-column">
-    <div class="prayer-box" id="FajrBox">Fajr - <span id="fajrClock"></span></div>
-    <div class="prayer-box" id="DhuhrBox">Zohar - <span id="dhuhrClock"></span></div>
-    <div class="prayer-box" id="AsrBox">Asar - <span id="asrClock"></span></div>
-  </div>
+  <div class="prayer-box" id="DhuhrBox">Zohar <span id="dhuhrClock"></span></div>
+  <div class="prayer-box" id="IshaBox">Isha <span id="ishaClock"></span></div>
 
-  <!-- Left Column -->
-  <div class="prayer-column">
-    <div class="prayer-box" id="MaghribBox">Maghrib - <span id="maghribClock"></span></div>
-    <div class="prayer-box" id="IshaBox">Isha - <span id="ishaClock"></span></div>
-    <div class="prayer-box" id="JumaBox">Juma - 01:30 PM</div>
-  </div>
-
+  <div class="prayer-box" id="AsrBox">Asar <span id="asrClock"></span></div>
+  <div class="prayer-box" id="JumaBox">Juma <span>01:30 PM</span></div>
 </div>
+
 </div>
 
 <!-- Donation Card -->
