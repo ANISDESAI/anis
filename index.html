@@ -197,7 +197,7 @@ async function fetchPrayerTimesMumbai(){
       document.getElementById("maghribClock").innerText = formatTime(t.Maghrib);
       document.getElementById("ishaClock").innerText = formatTime(t.Isha);
     }
-  }catch(err){
+  } catch(err){
     console.log("Prayer API Error:", err);
   }
 }
@@ -212,67 +212,79 @@ function formatTime(time24){
 
 fetchPrayerTimesMumbai();
 
+
 /* ==============================
    DONATION SECTION
 ============================== */
 
-const API_URL="https://script.google.com/macros/s/AKfycbx4lP00Q3kbRpq3ajbBxPDpgSp7QHecEKcoPNtH4mhqalnsDbAQlGB2pLSKtXIOya1i/exec";
-let donationList=[],kharchaList=[];
+const API_URL = "https://script.google.com/macros/s/AKfycbx4lP00Q3kbRpq3ajbBxPDpgSp7QHecEKcoPNtH4mhqalnsDbAQlGB2pLSKtXIOya1i/exec";
+let donationList = [], kharchaList = [];
 
+// Show selected section and scroll into view
 function showSection(id){
   document.getElementById('donation').style.display='none';
   document.getElementById('kharcha').style.display='none';
-  document.getElementById(id).style.display='block';
+
+  const section = document.getElementById(id);
+  section.style.display='block';
+
+  // Scroll smoothly to the section
+  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-/* DD-MM-YY Format */
+// Format date in DD-MM-YY
 function formatIndianDate(dateString){
   if(!dateString) return "-";
-  const d=new Date(dateString);
-  const day=("0"+d.getDate()).slice(-2);
-  const month=("0"+(d.getMonth()+1)).slice(-2);
-  const year=d.getFullYear().toString().slice(-2);
+  const d = new Date(dateString);
+  const day = ("0" + d.getDate()).slice(-2);
+  const month = ("0" + (d.getMonth()+1)).slice(-2);
+  const year = d.getFullYear().toString().slice(-2);
   return `${day}-${month}-${year}`;
 }
 
+// Fetch data from API
 async function fetchData(){
   try{
-    const res=await fetch(API_URL);
-    const data=await res.json();
-    donationList=data.donations;
-    kharchaList=data.kharcha;
+    const res = await fetch(API_URL);
+    const data = await res.json();
+    donationList = data.donations;
+    kharchaList = data.kharcha;
     renderTables();
     calculateTotals();
-  }catch(err){console.log(err);}
+  } catch(err){
+    console.log(err);
+  }
 }
 
+// Render tables
 function renderTables(){
-  const dTable=document.getElementById('donationTable');
+  const dTable = document.getElementById('donationTable');
   donationList.forEach((d,i)=>{
-    let r=dTable.insertRow();
-    r.insertCell(0).innerText=i+1;
-    r.insertCell(1).innerText=d.Name||"Anonymous";
-    r.insertCell(2).innerText=d.Amount;
-    r.insertCell(3).innerText=formatIndianDate(d.Date);
-    r.insertCell(4).innerText=d.Method||"-";
+    let r = dTable.insertRow();
+    r.insertCell(0).innerText = i+1;
+    r.insertCell(1).innerText = d.Name || "Anonymous";
+    r.insertCell(2).innerText = d.Amount;
+    r.insertCell(3).innerText = formatIndianDate(d.Date);
+    r.insertCell(4).innerText = d.Method || "-";
   });
 
-  const kTable=document.getElementById('kharchaTable');
+  const kTable = document.getElementById('kharchaTable');
   kharchaList.forEach((k,i)=>{
-    let r=kTable.insertRow();
-    r.insertCell(0).innerText=i+1;
-    r.insertCell(1).innerText=k.Purpose;
-    r.insertCell(2).innerText=k.Amount;
-    r.insertCell(3).innerText=formatIndianDate(k.Date);
-    r.insertCell(4).innerText=k.PaidFrom||"-";
+    let r = kTable.insertRow();
+    r.insertCell(0).innerText = i+1;
+    r.insertCell(1).innerText = k.Purpose;
+    r.insertCell(2).innerText = k.Amount;
+    r.insertCell(3).innerText = formatIndianDate(k.Date);
+    r.insertCell(4).innerText = k.PaidFrom || "-";
   });
 }
 
+// Calculate totals and balance
 function calculateTotals(){
-  let totalDonation=donationList.reduce((s,d)=>s+parseInt(d.Amount),0);
-  let totalKharcha=kharchaList.reduce((s,k)=>s+parseInt(k.Amount),0);
-  document.getElementById('donationCounter').innerText="₹ "+totalDonation;
-  document.getElementById('balance').innerText=totalDonation-totalKharcha;
+  let totalDonation = donationList.reduce((s,d)=>s+parseInt(d.Amount),0);
+  let totalKharcha = kharchaList.reduce((s,k)=>s+parseInt(k.Amount),0);
+  document.getElementById('donationCounter').innerText = "₹ " + totalDonation;
+  document.getElementById('balance').innerText = totalDonation - totalKharcha;
 }
 
 fetchData();
