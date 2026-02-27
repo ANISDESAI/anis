@@ -30,7 +30,7 @@ header h1{font-size:34px;color:#006400;}
   margin-bottom:25px;
 }
 
-/* Totals Horizontal Dashboard */
+/* Totals Dashboard */
 .totals-container{
   display:flex;
   justify-content:space-between;
@@ -47,20 +47,17 @@ header h1{font-size:34px;color:#006400;}
   color:#fff;
   font-size:18px; /* title font size */
   box-shadow:0 5px 15px rgba(0,0,0,0.1);
-  transition: transform 0.3s;
-}
-.total-box:hover{
-  transform: translateY(-5px);
 }
 .total-box h3{
   margin-bottom:12px;
-  font-size:16px; /* title */
+  font-size:16px; /* title font */
 }
+/* Slightly bigger numbers */
 .total-box .value{
-  font-size:50px;       /* big number */
-  font-weight:800;      /* extra bold */
+  font-size:30px;       /* moderate size */
+  font-weight:700;      
   margin-top:5px;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+  text-shadow:1px 1px 2px rgba(0,0,0,0.15);
 }
 
 /* Colors */
@@ -68,7 +65,7 @@ header h1{font-size:34px;color:#006400;}
 .total-used{background:linear-gradient(135deg,#d50000,#ff6659);}
 .total-balance{background:linear-gradient(135deg,#ffb300,#ffe066);color:#004d00;}
 
-/* Button group */
+/* Buttons */
 .button-group{
   display:flex;
   gap:15px;
@@ -86,7 +83,7 @@ header h1{font-size:34px;color:#006400;}
   cursor:pointer;
 }
 
-/* Table styling */
+/* Tables */
 .table-wrapper{overflow-x:auto;margin-top:20px;}
 table{width:100%;border-collapse:collapse;}
 th,td{
@@ -97,21 +94,20 @@ th,td{
 }
 th{background:rgba(0,200,83,0.3);color:#004d00;}
 
-/* Column widths for Donation Table */
+/* Donation Table column widths */
 #donationTable th:nth-child(1), #donationTable td:nth-child(1){ width:5%; }
 #donationTable th:nth-child(2), #donationTable td:nth-child(2){ width:35%; }
 #donationTable th:nth-child(3), #donationTable td:nth-child(3){ width:15%; }
-#donationTable th:nth-child(4), #donationTable td:nth-child(4){ width:20%; }
+#donationTable th:nth-child(4), #donationTable td:nth-child(4){ width:25%; }
 #donationTable th:nth-child(5), #donationTable td:nth-child(5){ width:15%; }
 
-/* Prayer Grid Layout */
+/* Prayer Grid */
 .prayer-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:15px 40px;
   margin-top:15px;
 }
-
 .prayer-box{
   background:rgba(255,255,255,0.5);
   backdrop-filter:blur(8px);
@@ -122,7 +118,6 @@ th{background:rgba(0,200,83,0.3);color:#004d00;}
   color:#006400;
   text-align:center;
 }
-
 .prayer-time{
   display:block;
   margin-top:4px;
@@ -214,7 +209,6 @@ async function fetchPrayerTimesMumbai(){
     }
   } catch(err){ console.log(err); }
 }
-
 function formatTime(time24){
   const [h,m] = time24.split(":");
   let hour = parseInt(h);
@@ -224,68 +218,60 @@ function formatTime(time24){
 }
 fetchPrayerTimesMumbai();
 
-/* Donation Section */
 const API_URL = "https://script.google.com/macros/s/AKfycbx4lP00Q3kbRpq3ajbBxPDpgSp7QHecEKcoPNtH4mhqalnsDbAQlGB2pLSKtXIOya1i/exec";
-let donationList = [], kharchaList = [];
-
+let donationList=[], kharchaList=[];
 function showSection(id){
   document.getElementById('donation').style.display='none';
   document.getElementById('kharcha').style.display='none';
-  const section = document.getElementById(id);
+  const section=document.getElementById(id);
   section.style.display='block';
-  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  section.scrollIntoView({behavior:'smooth', block:'start'});
 }
-
 function formatIndianDate(dateString){
   if(!dateString) return "-";
-  const d = new Date(dateString);
-  const day = ("0" + d.getDate()).slice(-2);
-  const month = ("0" + (d.getMonth()+1)).slice(-2);
-  const year = d.getFullYear().toString().slice(-2);
+  const d=new Date(dateString);
+  const day=("0"+d.getDate()).slice(-2);
+  const month=("0"+(d.getMonth()+1)).slice(-2);
+  const year=d.getFullYear().toString().slice(-2);
   return `${day}-${month}-${year}`;
 }
-
 async function fetchData(){
   try{
-    const res = await fetch(API_URL);
-    const data = await res.json();
-    donationList = data.donations;
-    kharchaList = data.kharcha;
+    const res=await fetch(API_URL);
+    const data=await res.json();
+    donationList=data.donations;
+    kharchaList=data.kharcha;
     renderTables();
     calculateTotals();
-  } catch(err){ console.log(err); }
+  }catch(err){console.log(err);}
 }
-
 function renderTables(){
-  const dTable = document.getElementById('donationTable');
+  const dTable=document.getElementById('donationTable');
   donationList.forEach((d,i)=>{
-    let r = dTable.insertRow();
-    r.insertCell(0).innerText = i+1;
-    r.insertCell(1).innerText = d.Name || "Anonymous";
-    r.insertCell(2).innerText = d.Amount;
-    r.insertCell(3).innerText = d.Method || "-";
-    r.insertCell(4).innerText = formatIndianDate(d.Date);
+    let r=dTable.insertRow();
+    r.insertCell(0).innerText=i+1;
+    r.insertCell(1).innerText=d.Name||"Anonymous";
+    r.insertCell(2).innerText=d.Amount;
+    r.insertCell(3).innerText=d.Method||"-";
+    r.insertCell(4).innerText=formatIndianDate(d.Date);
   });
-
-  const kTable = document.getElementById('kharchaTable');
+  const kTable=document.getElementById('kharchaTable');
   kharchaList.forEach((k,i)=>{
-    let r = kTable.insertRow();
-    r.insertCell(0).innerText = i+1;
-    r.insertCell(1).innerText = k.Purpose;
-    r.insertCell(2).innerText = k.Amount;
-    r.insertCell(3).innerText = formatIndianDate(k.Date);
-    r.insertCell(4).innerText = k.PaidFrom || "-";
+    let r=kTable.insertRow();
+    r.insertCell(0).innerText=i+1;
+    r.insertCell(1).innerText=k.Purpose;
+    r.insertCell(2).innerText=k.Amount;
+    r.insertCell(3).innerText=formatIndianDate(k.Date);
+    r.insertCell(4).innerText=k.PaidFrom||"-";
   });
 }
-
 function calculateTotals(){
-  let totalDonation = donationList.reduce((s,d)=>s+parseInt(d.Amount),0);
-  let totalKharcha = kharchaList.reduce((s,k)=>s+parseInt(k.Amount),0);
-  document.getElementById('donationCounter').innerText = "₹ "+totalDonation;
-  document.getElementById('donationUsed').innerText = "₹ "+totalKharcha;
-  document.getElementById('balance').innerText = "₹ "+(totalDonation-totalKharcha);
+  let totalDonation=donationList.reduce((s,d)=>s+parseInt(d.Amount),0);
+  let totalKharcha=kharchaList.reduce((s,k)=>s+parseInt(k.Amount),0);
+  document.getElementById('donationCounter').innerText="₹ "+totalDonation;
+  document.getElementById('donationUsed').innerText="₹ "+totalKharcha;
+  document.getElementById('balance').innerText="₹ "+(totalDonation-totalKharcha);
 }
-
 fetchData();
 </script>
 </body>
