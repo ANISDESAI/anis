@@ -57,20 +57,12 @@ header h1{font-size:34px;color:#006400;}
 .table-wrapper{overflow-x:auto;margin-top:20px;}
 table{width:100%;border-collapse:collapse;}
 th,td{
-  padding:8px;
+  padding:10px;
   text-align:center;
   border-bottom:1px solid rgba(0,0,0,0.1);
-  font-size:13px;
+  font-size:14px;
 }
 th{background:rgba(0,200,83,0.3);color:#004d00;}
-
-/* Adjust column widths */
-#donationTable th:nth-child(3),
-#donationTable td:nth-child(3){width:80px;} /* Amount column */
-#donationTable th:nth-child(4),
-#donationTable td:nth-child(4){width:70px;} /* Date column */
-#donationTable th,
-#donationTable td{white-space:nowrap;} /* prevent wrapping */
 
 /* Prayer Grid Layout */
 .prayer-grid{
@@ -140,7 +132,7 @@ th{background:rgba(0,200,83,0.3);color:#004d00;}
 <div id="donation" style="display:none;" class="table-wrapper">
 <table id="donationTable">
 <tr>
-<th>#</th><th>Name</th><th>Amount</th><th>Date</th><th>Method</th>
+<th>#</th><th>Name</th><th>Method</th><th>Amount</th><th>Date</th>
 </tr>
 </table>
 </div>
@@ -200,13 +192,14 @@ function showSection(id){
   section.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// Use compact date DD-MM
+// Format date in DD-MM-YYYY
 function formatIndianDate(dateString){
   if(!dateString) return "-";
   const d = new Date(dateString);
   const day = ("0" + d.getDate()).slice(-2);
   const month = ("0" + (d.getMonth()+1)).slice(-2);
-  return `${day}-${month}`;
+  const year = d.getFullYear();
+  return `${day}-${month}-${year}`;
 }
 
 async function fetchData(){
@@ -226,9 +219,9 @@ function renderTables(){
     let r = dTable.insertRow();
     r.insertCell(0).innerText = i+1;
     r.insertCell(1).innerText = d.Name || "Anonymous";
-    r.insertCell(2).innerText = d.Amount;
-    r.insertCell(3).innerText = formatIndianDate(d.Date);
-    r.insertCell(4).innerText = d.Method || "-";
+    r.insertCell(2).innerText = d.Method || "-"; // METHOD now 3rd column
+    r.insertCell(3).innerText = d.Amount;
+    r.insertCell(4).innerText = formatIndianDate(d.Date); // Date at the end
   });
 
   const kTable = document.getElementById('kharchaTable');
