@@ -30,7 +30,7 @@ header h1{font-size:34px;color:#006400;}
   margin-bottom:25px;
 }
 
-/* New horizontal totals */
+/* Totals Horizontal Dashboard */
 .totals-container{
   display:flex;
   justify-content:space-between;
@@ -40,25 +40,26 @@ header h1{font-size:34px;color:#006400;}
 }
 .total-box{
   flex:1;
-  background:rgba(255,255,255,0.5);
-  backdrop-filter:blur(8px);
-  padding:20px;
+  padding:25px 20px;
   border-radius:15px;
   text-align:center;
   font-weight:600;
-  color:#006400;
+  color:#fff;
   font-size:18px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+.total-box:hover{
+  transform: translateY(-5px);
 }
 .total-box h3{
-  margin-bottom:8px;
+  margin-bottom:12px;
   font-size:16px;
-  color:#004d00;
 }
-.total-box .value{
-  font-size:28px;
-  font-weight:700;
-  color:#006400;
-}
+/* Colors */
+.total-donation{background:linear-gradient(135deg,#00c853,#66ff66);}
+.total-used{background:linear-gradient(135deg,#d50000,#ff6659);}
+.total-balance{background:linear-gradient(135deg,#ffb300,#ffe066);color:#004d00;}
 
 /* Button group */
 .button-group{
@@ -145,19 +146,19 @@ th{background:rgba(0,200,83,0.3);color:#004d00;}
 </div>
 </div>
 
-<!-- Totals Horizontal -->
+<!-- Totals Dashboard -->
 <div class="card">
 <h2>Summary</h2>
 <div class="totals-container">
-  <div class="total-box">
+  <div class="total-box total-donation">
     <h3>Total Donation</h3>
     <div class="value" id="donationCounter">₹ 0</div>
   </div>
-  <div class="total-box">
+  <div class="total-box total-used">
     <h3>Donation Used</h3>
     <div class="value" id="donationUsed">₹ 0</div>
   </div>
-  <div class="total-box">
+  <div class="total-box total-balance">
     <h3>Balance</h3>
     <div class="value" id="balance">₹ 0</div>
   </div>
