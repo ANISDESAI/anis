@@ -64,7 +64,6 @@ header h1{font-size:34px;color:#006400;}
   font-weight:600;
   color:#fff;
   font-size:18px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 .total-box h3{margin-bottom:12px;font-size:16px;}
 
@@ -105,7 +104,6 @@ th{background:rgba(0,200,83,0.3);color:#004d00;}
   gap:15px 40px;
   margin-top:15px;
 }
-
 .prayer-box{
   background:rgba(255,255,255,0.5);
   padding:12px;
@@ -115,7 +113,6 @@ th{background:rgba(0,200,83,0.3);color:#004d00;}
   color:#006400;
   text-align:center;
 }
-
 .prayer-time{
   display:block;
   margin-top:4px;
@@ -139,7 +136,7 @@ th{background:rgba(0,200,83,0.3);color:#004d00;}
 
 <div class="container">
 
-<!-- Prayer Card -->
+<!-- Prayer -->
 <div class="card">
 <h2 id="namazTitle">Namaz Timings (Mumbai)</h2>
 <div class="prayer-grid">
@@ -171,7 +168,7 @@ th{background:rgba(0,200,83,0.3);color:#004d00;}
 </div>
 </div>
 
-<!-- Manage Donations -->
+<!-- Manage -->
 <div class="card">
 <h2 id="manageTitle">Manage Donations & Funds</h2>
 
@@ -200,6 +197,8 @@ th{background:rgba(0,200,83,0.3);color:#004d00;}
 </div>
 
 <script>
+
+/* Language Switch */
 function setLanguage(lang){
   if(lang==="hi"){
     subtitle.innerText="दान और फंड प्रबंधन";
@@ -219,22 +218,26 @@ function setLanguage(lang){
     kAmountHead.innerText="राशि";
     kDateHead.innerText="तारीख";
     paidFromHead.innerText="किससे भुगतान";
-    fajrLabel.innerText="फ़ज्र";
-    zoharLabel.innerText="ज़ोहर";
-    asarLabel.innerText="असर";
-    maghribLabel.innerText="मग़रिब";
-    ishaLabel.innerText="ईशा";
-    jumaLabel.innerText="जुमा";
   } else {
     location.reload();
   }
 }
 
+/* Show Section */
 function showSection(id){
-  document.getElementById('donation').style.display='none';
-  document.getElementById('kharcha').style.display='none';
+  donation.style.display='none';
+  kharcha.style.display='none';
   document.getElementById(id).style.display='block';
-  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+
+/* Format Date DD-MM-YY */
+function formatIndianDate(dateString){
+  if(!dateString) return "-";
+  const d=new Date(dateString);
+  const day=("0"+d.getDate()).slice(-2);
+  const month=("0"+(d.getMonth()+1)).slice(-2);
+  const year=d.getFullYear().toString().slice(-2);
+  return `${day}-${month}-${year}`;
 }
 
 /* Prayer API */
@@ -242,24 +245,18 @@ async function fetchPrayerTimesMumbai(){
   const response=await fetch("https://api.aladhan.com/v1/timingsByCity?city=Mumbai&country=India&method=2");
   const data=await response.json();
   const t=data.data.timings;
-  fajrClock.innerText=formatTime(t.Fajr);
-  dhuhrClock.innerText=formatTime(t.Dhuhr);
-  asrClock.innerText=formatTime(t.Asr);
-  maghribClock.innerText=formatTime(t.Maghrib);
-  ishaClock.innerText=formatTime(t.Isha);
-}
-function formatTime(time24){
-  const[h,m]=time24.split(":");
-  let hour=parseInt(h);
-  let ampm=hour>=12?"PM":"AM";
-  hour=hour%12||12;
-  return hour.toString().padStart(2,"0")+":"+m+" "+ampm;
+  fajrClock.innerText=t.Fajr;
+  dhuhrClock.innerText=t.Dhuhr;
+  asrClock.innerText=t.Asr;
+  maghribClock.innerText=t.Maghrib;
+  ishaClock.innerText=t.Isha;
 }
 fetchPrayerTimesMumbai();
 
 /* Donation API */
-const API_URL="https://script.google.com/macros/s/AKfycbx4lP00Q3kbRpq3ajbBxPDpgSp7QHecEKcoPNtH4mhqalnsDbAQlGB2pLSKtXIOya1i/exec";
+const API_URL="YOUR_GOOGLE_SCRIPT_URL_HERE";
 let donationList=[],kharchaList=[];
+
 async function fetchData(){
   const res=await fetch(API_URL);
   const data=await res.json();
@@ -268,6 +265,7 @@ async function fetchData(){
   renderTables();
   calculateTotals();
 }
+
 function renderTables(){
   donationList.forEach((d,i)=>{
     let r=donationTable.insertRow();
@@ -275,17 +273,19 @@ function renderTables(){
     r.insertCell(1).innerText=d.Name||"Anonymous";
     r.insertCell(2).innerText=d.Amount;
     r.insertCell(3).innerText=d.Method||"-";
-    r.insertCell(4).innerText=d.Date||"-";
+    r.insertCell(4).innerText=formatIndianDate(d.Date);
   });
+
   kharchaList.forEach((k,i)=>{
     let r=kharchaTable.insertRow();
     r.insertCell(0).innerText=i+1;
     r.insertCell(1).innerText=k.Purpose;
     r.insertCell(2).innerText=k.Amount;
-    r.insertCell(3).innerText=k.Date||"-";
+    r.insertCell(3).innerText=formatIndianDate(k.Date);
     r.insertCell(4).innerText=k.PaidFrom||"-";
   });
 }
+
 function calculateTotals(){
   let totalDonation=donationList.reduce((s,d)=>s+parseInt(d.Amount||0),0);
   let totalKharcha=kharchaList.reduce((s,k)=>s+parseInt(k.Amount||0),0);
@@ -293,7 +293,9 @@ function calculateTotals(){
   donationUsed.innerText="₹ "+totalKharcha;
   balance.innerText="₹ "+(totalDonation-totalKharcha);
 }
+
 fetchData();
+
 </script>
 
 </body>
