@@ -132,13 +132,14 @@ th{background:rgba(0,200,83,0.3);color:#004d00;}
 </div>
 
 <header>
-<h1 id="mainTitle">🕌 Irfaniya Masjid & Madarsa</h1>
+<h1>🕌 Irfaniya Masjid & Madarsa</h1>
 <div class="urdu">مدرسہ عرفانیہ مسجد</div>
 <div class="subtitle" id="subtitle">Donation & Funds Management</div>
 </header>
 
 <div class="container">
 
+<!-- Prayer Card -->
 <div class="card">
 <h2 id="namazTitle">Namaz Timings (Mumbai)</h2>
 <div class="prayer-grid">
@@ -151,6 +152,7 @@ th{background:rgba(0,200,83,0.3);color:#004d00;}
 </div>
 </div>
 
+<!-- Summary -->
 <div class="card">
 <h2 id="summaryTitle">Summary</h2>
 <div class="totals-container">
@@ -169,38 +171,129 @@ th{background:rgba(0,200,83,0.3);color:#004d00;}
 </div>
 </div>
 
+<!-- Manage Donations -->
+<div class="card">
+<h2 id="manageTitle">Manage Donations & Funds</h2>
+
+<div class="button-group">
+<button id="donationBtn" onclick="showSection('donation')">Donation List</button>
+<button id="kharchaBtn" onclick="showSection('kharcha')">Fund Used List</button>
+</div>
+
+<div id="donation" style="display:none;" class="table-wrapper">
+<table id="donationTable">
+<tr>
+<th>#</th><th id="nameHead">Name</th><th id="amountHead">Amount</th><th id="methodHead">Method</th><th id="dateHead">Date</th>
+</tr>
+</table>
+</div>
+
+<div id="kharcha" style="display:none;" class="table-wrapper">
+<table id="kharchaTable">
+<tr>
+<th>#</th><th id="purposeHead">Purpose</th><th id="kAmountHead">Amount</th><th id="kDateHead">Date</th><th id="paidFromHead">Paid From</th>
+</tr>
+</table>
+</div>
+
+</div>
 </div>
 
 <script>
 function setLanguage(lang){
-  if(lang === "hi"){
-    document.getElementById("subtitle").innerText = "दान और फंड प्रबंधन";
-    document.getElementById("namazTitle").innerText = "नमाज़ के समय (मुंबई)";
-    document.getElementById("summaryTitle").innerText = "सारांश";
-    document.getElementById("totalDonationLabel").innerText = "कुल दान";
-    document.getElementById("donationUsedLabel").innerText = "खर्च की गई राशि";
-    document.getElementById("balanceLabel").innerText = "शेष राशि";
-    document.getElementById("fajrLabel").innerText = "फ़ज्र";
-    document.getElementById("zoharLabel").innerText = "ज़ोहर";
-    document.getElementById("asarLabel").innerText = "असर";
-    document.getElementById("maghribLabel").innerText = "मग़रिब";
-    document.getElementById("ishaLabel").innerText = "ईशा";
-    document.getElementById("jumaLabel").innerText = "जुमा";
+  if(lang==="hi"){
+    subtitle.innerText="दान और फंड प्रबंधन";
+    namazTitle.innerText="नमाज़ के समय (मुंबई)";
+    summaryTitle.innerText="सारांश";
+    manageTitle.innerText="दान और खर्च प्रबंधन";
+    totalDonationLabel.innerText="कुल दान";
+    donationUsedLabel.innerText="खर्च की गई राशि";
+    balanceLabel.innerText="शेष राशि";
+    donationBtn.innerText="दान सूची";
+    kharchaBtn.innerText="खर्च सूची";
+    nameHead.innerText="नाम";
+    amountHead.innerText="राशि";
+    methodHead.innerText="तरीका";
+    dateHead.innerText="तारीख";
+    purposeHead.innerText="उद्देश्य";
+    kAmountHead.innerText="राशि";
+    kDateHead.innerText="तारीख";
+    paidFromHead.innerText="किससे भुगतान";
+    fajrLabel.innerText="फ़ज्र";
+    zoharLabel.innerText="ज़ोहर";
+    asarLabel.innerText="असर";
+    maghribLabel.innerText="मग़रिब";
+    ishaLabel.innerText="ईशा";
+    jumaLabel.innerText="जुमा";
   } else {
-    document.getElementById("subtitle").innerText = "Donation & Funds Management";
-    document.getElementById("namazTitle").innerText = "Namaz Timings (Mumbai)";
-    document.getElementById("summaryTitle").innerText = "Summary";
-    document.getElementById("totalDonationLabel").innerText = "Total Donation";
-    document.getElementById("donationUsedLabel").innerText = "Donation Used";
-    document.getElementById("balanceLabel").innerText = "Balance";
-    document.getElementById("fajrLabel").innerText = "Fajr";
-    document.getElementById("zoharLabel").innerText = "Zohar";
-    document.getElementById("asarLabel").innerText = "Asar";
-    document.getElementById("maghribLabel").innerText = "Maghrib";
-    document.getElementById("ishaLabel").innerText = "Isha";
-    document.getElementById("jumaLabel").innerText = "Juma";
+    location.reload();
   }
 }
+
+function showSection(id){
+  document.getElementById('donation').style.display='none';
+  document.getElementById('kharcha').style.display='none';
+  document.getElementById(id).style.display='block';
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+
+/* Prayer API */
+async function fetchPrayerTimesMumbai(){
+  const response=await fetch("https://api.aladhan.com/v1/timingsByCity?city=Mumbai&country=India&method=2");
+  const data=await response.json();
+  const t=data.data.timings;
+  fajrClock.innerText=formatTime(t.Fajr);
+  dhuhrClock.innerText=formatTime(t.Dhuhr);
+  asrClock.innerText=formatTime(t.Asr);
+  maghribClock.innerText=formatTime(t.Maghrib);
+  ishaClock.innerText=formatTime(t.Isha);
+}
+function formatTime(time24){
+  const[h,m]=time24.split(":");
+  let hour=parseInt(h);
+  let ampm=hour>=12?"PM":"AM";
+  hour=hour%12||12;
+  return hour.toString().padStart(2,"0")+":"+m+" "+ampm;
+}
+fetchPrayerTimesMumbai();
+
+/* Donation API */
+const API_URL="https://script.google.com/macros/s/AKfycbx4lP00Q3kbRpq3ajbBxPDpgSp7QHecEKcoPNtH4mhqalnsDbAQlGB2pLSKtXIOya1i/exec";
+let donationList=[],kharchaList=[];
+async function fetchData(){
+  const res=await fetch(API_URL);
+  const data=await res.json();
+  donationList=data.donations;
+  kharchaList=data.kharcha;
+  renderTables();
+  calculateTotals();
+}
+function renderTables(){
+  donationList.forEach((d,i)=>{
+    let r=donationTable.insertRow();
+    r.insertCell(0).innerText=i+1;
+    r.insertCell(1).innerText=d.Name||"Anonymous";
+    r.insertCell(2).innerText=d.Amount;
+    r.insertCell(3).innerText=d.Method||"-";
+    r.insertCell(4).innerText=d.Date||"-";
+  });
+  kharchaList.forEach((k,i)=>{
+    let r=kharchaTable.insertRow();
+    r.insertCell(0).innerText=i+1;
+    r.insertCell(1).innerText=k.Purpose;
+    r.insertCell(2).innerText=k.Amount;
+    r.insertCell(3).innerText=k.Date||"-";
+    r.insertCell(4).innerText=k.PaidFrom||"-";
+  });
+}
+function calculateTotals(){
+  let totalDonation=donationList.reduce((s,d)=>s+parseInt(d.Amount||0),0);
+  let totalKharcha=kharchaList.reduce((s,k)=>s+parseInt(k.Amount||0),0);
+  donationCounter.innerText="₹ "+totalDonation;
+  donationUsed.innerText="₹ "+totalKharcha;
+  balance.innerText="₹ "+(totalDonation-totalKharcha);
+}
+fetchData();
 </script>
 
 </body>
