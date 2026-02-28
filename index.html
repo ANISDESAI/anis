@@ -190,7 +190,9 @@ th{background:rgba(0,200,83,0.3);color:#004d00;}
 
 <script>
 
-/* Language Switch */
+/* ================================
+   LANGUAGE SWITCH
+================================ */
 function setLanguage(lang){
   if(lang==="hi"){
     subtitle.innerText="दान और फंड प्रबंधन";
@@ -207,14 +209,20 @@ function setLanguage(lang){
   }
 }
 
-/* Show Section */
+/* ================================
+   SHOW SECTION + AUTO SCROLL
+================================ */
 function showSection(id){
-  donation.style.display='none';
-  kharcha.style.display='none';
-  document.getElementById(id).style.display='block';
+  document.getElementById('donation').style.display='none';
+  document.getElementById('kharcha').style.display='none';
+  const section = document.getElementById(id);
+  section.style.display='block';
+  section.scrollIntoView({ behavior:"smooth", block:"start" });
 }
 
-/* Format Date DD-MM-YY India Safe */
+/* ================================
+   DATE FORMAT DD-MM-YY (India Safe)
+================================ */
 function formatIndianDate(dateString){
   if(!dateString) return "-";
   const d=new Date(dateString);
@@ -225,21 +233,27 @@ function formatIndianDate(dateString){
   return `${day}-${month}-${year}`;
 }
 
-/* Prayer API */
+/* ================================
+   PRAYER TIMES API
+================================ */
 async function fetchPrayerTimesMumbai(){
-  const response=await fetch("https://api.aladhan.com/v1/timingsByCity?city=Mumbai&country=India&method=2");
-  const data=await response.json();
-  const t=data.data.timings;
-  fajrClock.innerText=t.Fajr;
-  dhuhrClock.innerText=t.Dhuhr;
-  asrClock.innerText=t.Asr;
-  maghribClock.innerText=t.Maghrib;
-  ishaClock.innerText=t.Isha;
+  try{
+    const response=await fetch("https://api.aladhan.com/v1/timingsByCity?city=Mumbai&country=India&method=2");
+    const data=await response.json();
+    const t=data.data.timings;
+    fajrClock.innerText=t.Fajr;
+    dhuhrClock.innerText=t.Dhuhr;
+    asrClock.innerText=t.Asr;
+    maghribClock.innerText=t.Maghrib;
+    ishaClock.innerText=t.Isha;
+  }catch(e){ console.error("Prayer API Error:", e); }
 }
 fetchPrayerTimesMumbai();
 
-/* Google Sheet API */
-const API_URL="https://script.google.com/macros/s/AKfycbx4lP00Q3kbRpq3ajbBxPDpgSp7QHecEKcoPNtH4mhqalnsDbAQlGB2pLSKtXIOya1i/exec";
+/* ================================
+   GOOGLE SHEET API
+================================ */
+const API_URL="PASTE_YOUR_WEB_APP_EXEC_URL_HERE";
 
 let donationList=[],kharchaList=[];
 
@@ -251,18 +265,20 @@ async function fetchData(){
     kharchaList=data.kharcha||[];
     renderTables();
     calculateTotals();
-  }catch(e){
-    alert("Failed to load Google Sheet data.");
-  }
+  }catch(e){ alert("Failed to load Google Sheet data."); }
 }
 
+/* ================================
+   RENDER TABLES
+================================ */
 function renderTables(){
-
   donationTable.innerHTML=`<tr>
-  <th>#</th><th>Name</th><th>Amount</th><th>Method</th><th>Date</th></tr>`;
+    <th>#</th><th>Name</th><th>Amount</th><th>Method</th><th>Date</th>
+  </tr>`;
 
   kharchaTable.innerHTML=`<tr>
-  <th>#</th><th>Purpose</th><th>Amount</th><th>Date</th><th>Paid From</th></tr>`;
+    <th>#</th><th>Purpose</th><th>Amount</th><th>Date</th><th>Paid From</th>
+  </tr>`;
 
   donationList.forEach((d,i)=>{
     let r=donationTable.insertRow();
@@ -283,6 +299,9 @@ function renderTables(){
   });
 }
 
+/* ================================
+   CALCULATE TOTALS
+================================ */
 function calculateTotals(){
   let totalDonation=donationList.reduce((s,d)=>s+parseInt(d.Amount||0),0);
   let totalKharcha=kharchaList.reduce((s,k)=>s+parseInt(k.Amount||0),0);
