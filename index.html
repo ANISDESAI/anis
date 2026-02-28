@@ -15,19 +15,17 @@ body{
   color:#2c3e50;
 }
 
-/* Language Buttons (not fixed) */
+/* Language Buttons inline with subtitle */
 .lang-buttons{
   display:flex;
-  justify-content:center; /* centered above header */
   gap:15px;
-  margin-bottom:15px;
 }
 .lang-buttons button{
-  padding:10px 25px;
+  padding:6px 15px;
   border:none;
   border-radius:50px;
   font-weight:600;
-  font-size:16px;
+  font-size:14px;
   cursor:pointer;
   transition:0.3s;
   box-shadow:0 4px 8px rgba(0,0,0,0.2);
@@ -36,7 +34,7 @@ body{
 #btnEn{background:linear-gradient(135deg,#2196F3,#64B5F6);}
 #btnHi{background:linear-gradient(135deg,#FF5722,#FF8A65);}
 .lang-buttons button:hover{
-  transform:translateY(-3px);
+  transform:translateY(-2px);
   box-shadow:0 6px 12px rgba(0,0,0,0.3);
 }
 .lang-buttons button.active{
@@ -48,7 +46,12 @@ body{
 header{text-align:center;padding:40px 15px 20px;}
 header h1{font-size:34px;color:#006400;}
 .urdu{font-family:'Noto Nastaliq Urdu',serif;font-size:24px;color:#004d00;}
-.subtitle{margin-top:5px;color:#006400;}
+.header-subtitle{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:5px;
+}
 
 /* Cards */
 .container{max-width:1100px;margin:auto;padding:20px;}
@@ -134,16 +137,16 @@ th{background:rgba(0,200,83,0.3);color:#004d00;}
 </head>
 <body>
 
-<!-- Language Buttons -->
-<div class="lang-buttons">
-  <button id="btnEn" onclick="setLanguage('en')">English</button>
-  <button id="btnHi" onclick="setLanguage('hi')">हिन्दी</button>
-</div>
-
 <header>
 <h1>🕌 Irfaniya Masjid & Madarsa</h1>
 <div class="urdu">مدرسہ عرفانیہ مسجد</div>
-<div class="subtitle" id="subtitle">Donation & Funds Management</div>
+<div class="header-subtitle">
+  <div class="subtitle" id="subtitle">Donation & Funds Management</div>
+  <div class="lang-buttons">
+    <button id="btnEn" onclick="setLanguage('en')">English</button>
+    <button id="btnHi" onclick="setLanguage('hi')">हिन्दी</button>
+  </div>
+</div>
 </header>
 
 <div class="container">
@@ -201,21 +204,17 @@ th{background:rgba(0,200,83,0.3);color:#004d00;}
 </div>
 
 <script>
-/* =============================
-   LANGUAGE SWITCH + ACTIVE BUTTON
-=============================== */
+// LANGUAGE SWITCH
 function setLanguage(lang){
-  // Active button
   document.querySelectorAll('.lang-buttons button').forEach(b=>b.classList.remove('active'));
   if(lang==='en') document.getElementById('btnEn').classList.add('active');
   else document.getElementById('btnHi').classList.add('active');
 
-  // Content
   if(lang==="hi"){
     subtitle.innerText="चंदा का हिसाब";
     namazTitle.innerText="नमाज़ का वक्त";
     summaryTitle.innerText="हिसाब";
-    manageTitle.innerText="दान और खर्च प्रबंधन";
+    manageTitle.innerText="चंदा का हिसाब";
     totalDonationLabel.innerText="कुल चंदा";
     donationUsedLabel.innerText="खर्च किए गए पैसे";
     balanceLabel.innerText="बचा हुआ पैसा";
@@ -246,7 +245,7 @@ function setLanguage(lang){
   }
 }
 
-/* Show Section + Auto Scroll */
+// Show section + scroll
 function showSection(id){
   document.getElementById('donation').style.display='none';
   document.getElementById('kharcha').style.display='none';
@@ -255,7 +254,7 @@ function showSection(id){
   section.scrollIntoView({behavior:"smooth",block:"start"});
 }
 
-/* Format Date DD-MM-YY */
+// Format DD-MM-YY
 function formatIndianDate(dateString){
   if(!dateString) return "-";
   const d=new Date(dateString);
@@ -266,7 +265,7 @@ function formatIndianDate(dateString){
   return `${day}-${month}-${year}`;
 }
 
-/* Prayer API */
+// Prayer API
 async function fetchPrayerTimesMumbai(){
   try{
     const response=await fetch("https://api.aladhan.com/v1/timingsByCity?city=Mumbai&country=India&method=2");
@@ -281,9 +280,8 @@ async function fetchPrayerTimesMumbai(){
 }
 fetchPrayerTimesMumbai();
 
-/* Google Sheet API */
-const API_URL="https://script.google.com/macros/s/AKfycbx4lP00Q3kbRpq3ajbBxPDpgSp7QHecEKcoPNtH4mhqalnsDbAQlGB2pLSKtXIOya1i/exec"; // replace with your web app
-
+// Google Sheet API
+const API_URL="https://script.google.com/macros/s/AKfycbx4lP00Q3kbRpq3ajbBxPDpgSp7QHecEKcoPNtH4mhqalnsDbAQlGB2pLSKtXIOya1i/exec"; // replace
 let donationList=[],kharchaList=[];
 async function fetchData(){
   try{
