@@ -9,11 +9,21 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
+
 body{
   font-family:'Poppins',sans-serif;
-  background:linear-gradient(135deg,#a8e6cf,#dcedc1);
-  color:#2c3e50;
+  
+  /* Background Image */
+  background-image: url("background.jpeg");  /* your image file */
+  background-size: cover;                    /* cover entire screen */
+  background-position: center;               /* centered */
+  background-repeat: no-repeat;             /* no tiling */
+  background-attachment: fixed;             /* fixed during scroll */
+  
+  min-height: 100vh;                        /* full height */
+  color:#2c3e50;                            /* default text color */
 }
+
 .lang-buttons{
   display:flex;
   gap:15px;
@@ -210,7 +220,6 @@ function setLanguage(lang){
     balanceLabel.innerText="बचा हुआ पैसा";
     donationBtn.innerText="चंदा लिस्ट";
     kharchaBtn.innerText="खर्च किए गए पैसे लिस्ट";
-    // Only change label text, not span id
     document.querySelector("#prFajr .prayer-label").innerText="फ़ज्र";
     document.querySelector("#prZohar .prayer-label").innerText="ज़ुहर";
     document.querySelector("#prAsar .prayer-label").innerText="असर";
