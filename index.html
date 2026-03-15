@@ -12,16 +12,13 @@
 
 body{
   font-family:'Poppins',sans-serif;
-  
-  /* Background Image */
-  background-image: url("background.jpeg");  /* your image file */
-  background-size: cover;                    /* cover entire screen */
-  background-position: center;               /* centered */
-  background-repeat: no-repeat;             /* no tiling */
-  background-attachment: fixed;             /* fixed during scroll */
-  
-  min-height: 100vh;                        /* full height */
-  color:#2c3e50;                            /* default text color */
+  background-image: url("background.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  color:#2c3e50;
 }
 
 .lang-buttons{
@@ -62,7 +59,7 @@ header h1{font-size:34px;color:#006400;}
 
 .container{max-width:1100px;margin:auto;padding:20px;}
 .card{
-  background:rgba(255,255,255,0.6);
+  background:rgba(255,255,255,0.7);
   backdrop-filter:blur(12px);
   padding:25px;
   border-radius:20px;
@@ -87,7 +84,6 @@ header h1{font-size:34px;color:#006400;}
   font-size:18px;
 }
 .total-box h3{margin-bottom:12px;font-size:16px;}
-
 .total-donation{background:linear-gradient(135deg,#00c853,#66ff66);}
 .total-used{background:linear-gradient(135deg,#d50000,#ff6659);}
 .total-balance{background:linear-gradient(135deg,#ffb300,#ffe066);color:#004d00;}
@@ -112,12 +108,13 @@ header h1{font-size:34px;color:#006400;}
 .table-wrapper{overflow-x:auto;margin-top:20px;}
 table{width:100%;border-collapse:collapse;}
 th,td{
-  padding:10px;
+  padding:12px;
   text-align:center;
   border-bottom:1px solid rgba(0,0,0,0.1);
   font-size:14px;
 }
 th{background:rgba(0,200,83,0.3);color:#004d00;}
+tr:nth-child(even){background:rgba(0,0,0,0.03);}
 
 .prayer-grid{
   display:grid;
@@ -194,12 +191,38 @@ th{background:rgba(0,200,83,0.3);color:#004d00;}
 <button id="kharchaBtn" onclick="showSection('kharcha')">Fund Used List</button>
 </div>
 
+<!-- Donation Table -->
 <div id="donation" style="display:none;" class="table-wrapper">
-<table id="donationTable"></table>
+<table id="donationTable">
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Amount</th>
+<th>Method</th>
+<th>Date</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
 </div>
 
+<!-- Fund Used Table -->
 <div id="kharcha" style="display:none;" class="table-wrapper">
-<table id="kharchaTable"></table>
+<table id="kharchaTable">
+<thead>
+<tr>
+<th>#</th>
+<th>Purpose</th>
+<th>Amount</th>
+<th>Date</th>
+<th>Paid From</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
 </div>
 </div>
 
@@ -295,36 +318,29 @@ async function fetchData(){
 }
 
 function renderTables(){
-  donationTable.innerHTML=`<tr>
-    <th>#</th><th>Name</th><th>Amount</th><th>Method</th><th>Date</th>
-  </tr>`;
-  kharchaTable.innerHTML=`<tr>
-    <th>#</th><th>Purpose</th><th>Amount</th><th>Date</th><th>Paid From</th>
-  </tr>`;
+  const donationTbody=document.querySelector("#donationTable tbody");
+  donationTbody.innerHTML="";
   donationList.forEach((d,i)=>{
-    let r=donationTable.insertRow();
-    r.insertCell(0).innerText=i+1;
-    r.insertCell(1).innerText=d.Name||"Anonymous";
-    r.insertCell(2).innerText=d.Amount||0;
-    r.insertCell(3).innerText=d.Method||"-";
-    r.insertCell(4).innerText=formatIndianDate(d.Date);
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${i+1}</td><td>${d.Name||"Anonymous"}</td><td>₹ ${d.Amount||0}</td><td>${d.Method||"-"}</td><td>${formatIndianDate(d.Date)}</td>`;
+    donationTbody.appendChild(tr);
   });
+
+  const kharchaTbody=document.querySelector("#kharchaTable tbody");
+  kharchaTbody.innerHTML="";
   kharchaList.forEach((k,i)=>{
-    let r=kharchaTable.insertRow();
-    r.insertCell(0).innerText=i+1;
-    r.insertCell(1).innerText=k.Purpose||"-";
-    r.insertCell(2).innerText=k.Amount||0;
-    r.insertCell(3).innerText=formatIndianDate(k.Date);
-    r.insertCell(4).innerText=k.PaidFrom||"-";
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${i+1}</td><td>${k.Purpose||"-"}</td><td>₹ ${k.Amount||0}</td><td>${formatIndianDate(k.Date)}</td><td>${k.PaidFrom||"-"}</td>`;
+    kharchaTbody.appendChild(tr);
   });
 }
 
 function calculateTotals(){
   let totalDonation=donationList.reduce((s,d)=>s+parseInt(d.Amount||0),0);
   let totalKharcha=kharchaList.reduce((s,k)=>s+parseInt(k.Amount||0),0);
-  donationCounter.innerText="₹ "+totalDonation;
-  donationUsed.innerText="₹ "+totalKharcha;
-  balance.innerText="₹ "+(totalDonation-totalKharcha);
+  document.getElementById("donationCounter").innerText="₹ "+totalDonation;
+  document.getElementById("donationUsed").innerText="₹ "+totalKharcha;
+  document.getElementById("balance").innerText="₹ "+(totalDonation-totalKharcha);
 }
 
 fetchData();
